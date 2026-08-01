@@ -1,0 +1,46 @@
+name: Sync subpages from fia-fox-web
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout home repo (foxprof.club)
+        uses: actions/checkout@v4
+
+      - name: Checkout fia-fox-web (zdroj podstránok)
+        uses: actions/checkout@v4
+        with:
+          repository: peterferenc246-design/fia-fox-web
+          ref: main
+          path: fia-fox-web
+
+      - name: Sync podstránok + prepis domény register.foxprof.club -> foxprof.club
+        run: |
+          set -e
+          FILES="register.html podporte.html galerie.html socialne.html presse.html impressum.html datenschutz.html"
+          for f in $FILES; do
+            if [ -f "fia-fox-web/$f" ]; then
+              sed 's/register\.foxprof\.club/foxprof.club/g' "fia-fox-web/$f" > "$f"
+              echo "synced: $f"
+            else
+              echo "CHYBA: $f neexistuje vo fia-fox-web, preskakujem" >&2
+            fi
+          done
+
+      - name: Commit a push, ak sa niečo zmenilo
+        run: |
+          git config user.name "fia-sync-bot"
+          git config user.email "actions@github.com"
+          git add register.html podporte.html galerie.html socialne.html presse.html impressum.html datenschutz.html
+          if git diff --cached --quiet; then
+            echo "Žiadna zmena, nič sa necommituje."
+          else
+            git commit -m "auto: sync podstránok z fia-fox-web [skip ci]"
+            git push
+          fi
