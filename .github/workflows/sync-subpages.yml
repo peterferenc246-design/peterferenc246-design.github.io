@@ -13,7 +13,7 @@ jobs:
       - name: Checkout home repo (foxprof.club)
         uses: actions/checkout@v4
 
-      - name: Checkout fia-fox-web (zdroj podstránok)
+      - name: Checkout fia-fox-web (zdroj podstránok a obrázkov)
         uses: actions/checkout@v4
         with:
           repository: peterferenc246-design/fia-fox-web
@@ -33,14 +33,51 @@ jobs:
             fi
           done
 
+      - name: Sync celeho priecinka obrazky/ (bez mazania - len pridavanie/aktualizacia)
+        run: |
+          set -e
+          mkdir -p obrazky
+          if [ -d "fia-fox-web/obrazky" ]; then
+            rsync -a fia-fox-web/obrazky/ obrazky/
+            echo "obrazky/ synchronizovane (bez --delete, produkcne-only subory ostavaju)"
+          else
+            echo "fia-fox-web/obrazky neexistuje" >&2
+          fi
+
+      - name: Validacia - kazdy odkaz na obrazky/ v HTML musi realne existovat
+        run: |
+          python3 << 'PYEOF'
+          import re, glob, sys, os
+
+          missing = []
+          checked = set()
+          for html_path in glob.glob("*.html"):
+              with open(html_path, encoding="utf-8", errors="replace") as f:
+                  content = f.read()
+              for m in re.finditer(r'(?:src|href)=["\']?(obrazky/[^"\'\s?)]+)', content):
+                  path = m.group(1)
+                  checked.add(path)
+                  if not os.path.isfile(path):
+                      missing.append((html_path, path))
+
+          print(f"Skontrolovanych {len(checked)} unikatnych obrazkovych ciest.")
+          if missing:
+              print("::error::CHYBAJUCE OBRAZKY - workflow zlyha:")
+              for html_path, path in missing:
+                  print(f"  {html_path} -> {path} NEEXISTUJE")
+              sys.exit(1)
+          else:
+              print("OK - vsetky referencovane obrazky existuju.")
+          PYEOF
+
       - name: Commit a push, ak sa niečo zmenilo
         run: |
           git config user.name "fia-sync-bot"
           git config user.email "actions@github.com"
-          git add register.html podporte.html galerie.html socialne.html presse.html impressum.html datenschutz.html
+          git add register.html podporte.html galerie.html socialne.html presse.html impressum.html datenschutz.html obrazky/
           if git diff --cached --quiet; then
             echo "Žiadna zmena, nič sa necommituje."
           else
-            git commit -m "auto: sync podstránok z fia-fox-web [skip ci]"
+            git commit -m "auto: sync podstránok a obrázkov z fia-fox-web [skip ci]"
             git push
           fi
