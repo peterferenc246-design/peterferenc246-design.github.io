@@ -54,7 +54,7 @@ jobs:
           for html_path in glob.glob("*.html"):
               with open(html_path, encoding="utf-8", errors="replace") as f:
                   content = f.read()
-              for m in re.finditer(r'(?:src|href)=["\']?(obrazky/[^"\'\s?)]+)', content):
+              for m in re.finditer(r'(?:src|href)=["\']?(obrazky/[^"\'\s?)]+\.(?:jpg|jpeg|png|gif|svg|webp))(?=[?"\'\s)]|$)', content):
                   path = m.group(1)
                   checked.add(path)
                   if not os.path.isfile(path):
