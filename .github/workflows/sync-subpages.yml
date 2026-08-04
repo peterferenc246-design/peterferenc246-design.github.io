@@ -23,7 +23,7 @@ jobs:
       - name: Sync podstránok + prepis domény register.foxprof.club -> foxprof.club
         run: |
           set -e
-          FILES="register.html podporte.html galerie.html socialne.html presse.html impressum.html datenschutz.html"
+          FILES="register.html podporte.html galerie.html socialne.html presse.html impressum.html datenschutz.html dakujeme.html"
           for f in $FILES; do
             if [ -f "fia-fox-web/$f" ]; then
               sed 's/register\.foxprof\.club/foxprof.club/g' "fia-fox-web/$f" > "$f"
@@ -74,7 +74,7 @@ jobs:
         run: |
           git config user.name "fia-sync-bot"
           git config user.email "actions@github.com"
-          git add register.html podporte.html galerie.html socialne.html presse.html impressum.html datenschutz.html obrazky/
+          git add register.html podporte.html galerie.html socialne.html presse.html impressum.html datenschutz.html dakujeme.html obrazky/
           if git diff --cached --quiet; then
             echo "Žiadna zmena, nič sa necommituje."
           else
