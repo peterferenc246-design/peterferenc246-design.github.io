@@ -350,7 +350,7 @@ function setL(l){
   document.getElementById('custom').placeholder=CUSTOM[l]||'';
   document.getElementById('lk-home').href='index.html?lang='+l;
   document.getElementById('lk-foot').href='index.html?lang='+l;
-  document.getElementById('lk-reg').href='https://register.foxprof.club/register.html?lang='+l;
+  document.getElementById('lk-reg').href='https://foxprof.club/register.html?lang='+l;
   var HB={de:"01",en:"02",sk:"03",hr:"04",pl:"05",es:"06",it:"07",fr:"08",sv:"09"}; var hb=document.getElementById('hbanner'); if(hb) hb.src='obrazky/hero/'+HB[l]+'.jpg?v=20260728';
   renderImpact(); renderStats(); buildShare(); refreshBtn();
   if(!selCC){ var pp=document.getElementById('panel'); if(pp) pp.innerHTML='<div class="det">'+(PHINT[L()]||'')+'</div>'; }
