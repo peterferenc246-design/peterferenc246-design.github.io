@@ -1,0 +1,47 @@
+name: Prepocitat koncept stranky
+
+# Bezi VYHRADNE na vetve koncept. Nikdy sa nedotyka main (produkcia).
+# Spusti sa automaticky pri zmene _data/fia_data.json (napr. po ulozeni z editor.html),
+# alebo rucne cez workflow_dispatch.
+on:
+  push:
+    branches: [koncept]
+    paths:
+      - '_data/fia_data.json'
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: build-koncept
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout koncept
+        uses: actions/checkout@v4
+        with:
+          ref: koncept
+
+      - name: Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Generovanie register.html + karty z fia_data.json
+        run: python _data/gen_cards_full.py
+
+      - name: Commit ak sa nieco zmenilo (len na koncept)
+        run: |
+          git config user.name "koncept-build-bot"
+          git config user.email "actions@github.com"
+          git add register.html karta-case-*.html
+          if git diff --cached --quiet; then
+            echo "Ziadna zmena, nic sa necommituje."
+          else
+            git commit -m "auto: prepocitane stranky z fia_data.json [skip ci]"
+            git push origin HEAD:koncept
+          fi
