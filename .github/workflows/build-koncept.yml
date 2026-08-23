@@ -1,13 +1,10 @@
 name: Prepocitat koncept stranky
 
 # Bezi VYHRADNE na vetve koncept. Nikdy sa nedotyka main (produkcia).
-# Spusti sa automaticky pri zmene _data/fia_data.json (napr. po ulozeni z editor.html),
-# alebo rucne cez workflow_dispatch.
+# POZOR: automaticke spustanie pri zmene fia_data.json je ZAMERNE VYPNUTE
+# (data v fia_data.json su este nekompletne oproti skutocnemu register.html - hrozila by strata obsahu).
+# Spusti sa VYHRADNE rucne cez workflow_dispatch, az po overeni ze fia_data.json je kompletny zdroj.
 on:
-  push:
-    branches: [koncept]
-    paths:
-      - '_data/fia_data.json'
   workflow_dispatch: {}
 
 permissions:
