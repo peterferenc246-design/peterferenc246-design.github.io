@@ -509,8 +509,11 @@ function docs(){
    +(cu&&!cuL?'<span class="pill">odkaz bez '+cu+'</span>':'')
    +'<span class="cmtbadge" data-pid="'+_cpid+'"></span>'
    +'</div>'
+   +(p.court?'<div class="dw" style="margin-top:4px;color:#4a5568;font-size:12px">⚖️ Orgán: '+esc(p.court)+'</div>':'')
    +'<div class="dw" style="margin-top:6px">'
    +(((p.urls||{})[LANG])?'<a class="ob" href="'+esc(p.urls[LANG])+'" target="_blank" rel="noopener" onclick="event.stopPropagation()">📄 Otvoriť dokument</a>':'<span class="pill warn">bez odkazu v '+LANG.toUpperCase()+'</span>')
+   +(p.orig?'<a class="ob" href="'+esc(p.orig)+'" target="_blank" rel="noopener" onclick="event.stopPropagation()">✍ Podpísaný originál (QES)</a>':'')
+   +(p.komentare?'<a class="ob" href="#" onclick="event.stopPropagation();event.preventDefault();">💬 Komentovať</a>':'')
    +'</div></div>';}).join('');
  const s=zoz.filter(p=>p.dir==='sent'), r=zoz.filter(p=>p.dir!=='sent');
  const emptyBtn='<div class="empty" style="padding:12px"><button onclick="novaPolozka()" style="font-size:13px;padding:6px 14px;border:1px dashed #7a8899;border-radius:6px;background:#f5f8fb;cursor:pointer;color:var(--navy)">➕ Pridať dokument</button></div>';
