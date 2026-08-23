@@ -1,10 +1,14 @@
-name: Prepocitat koncept stranky
+name: Prepocitat koncept karty
 
 # Bezi VYHRADNE na vetve koncept. Nikdy sa nedotyka main (produkcia).
-# POZOR: automaticke spustanie pri zmene fia_data.json je ZAMERNE VYPNUTE
-# (data v fia_data.json su este nekompletne oproti skutocnemu register.html - hrozila by strata obsahu).
-# Spusti sa VYHRADNE rucne cez workflow_dispatch, az po overeni ze fia_data.json je kompletny zdroj.
+# Generuje a commituje LEN samostatne karty (karta-case-*.html) z _data/fia_data.json.
+# register.html NIKDY necommituje - jeho dizajn a struktura ostavaju bez zmeny,
+# udrziava sa vyhradne rucne.
 on:
+  push:
+    branches: [koncept]
+    paths:
+      - '_data/fia_data.json'
   workflow_dispatch: {}
 
 permissions:
@@ -28,17 +32,19 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Generovanie register.html + karty z fia_data.json
-        run: python _data/gen_cards_full.py
+      - name: Generovanie kariet z fia_data.json (register.html sa zahodi, nikdy sa necommituje)
+        run: |
+          python _data/gen_cards_full.py
+          git checkout -- register.html || true
 
-      - name: Commit ak sa nieco zmenilo (len na koncept)
+      - name: Commit ak sa nieco zmenilo (len karty, len na koncept)
         run: |
           git config user.name "koncept-build-bot"
           git config user.email "actions@github.com"
-          git add register.html karta-case-*.html
+          git add karta-case-*.html
           if git diff --cached --quiet; then
             echo "Ziadna zmena, nic sa necommituje."
           else
-            git commit -m "auto: prepocitane stranky z fia_data.json [skip ci]"
+            git commit -m "auto: prepocitane karty z fia_data.json [skip ci]"
             git push origin HEAD:koncept
           fi
