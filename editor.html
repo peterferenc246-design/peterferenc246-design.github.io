@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="sk"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>FIA FOX — editor registra</title>
+<style>
+:root{--navy:#1F3864;--red:#C00000;--bd:#c9d8e8;--bg:#eef3f8;--gold:#f0c040;--itembg:#D9E6F4;--edbg:#fff}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:#22303f;font:14px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;display:flex;flex-direction:column;overflow:hidden}
+#bar{background:var(--navy);color:#fff;padding:9px 16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;flex:0 0 auto;z-index:20}
+#bar b{letter-spacing:.02em}
+#bar .sp{flex:1}
+button{font:inherit;border:1px solid var(--bd);background:#fff;color:#3d4d5e;border-radius:5px;padding:6px 12px;cursor:pointer}
+button:hover{border-color:var(--navy);color:var(--navy)}
+#bar button{background:#2a4a80;color:#fff;border-color:#42639b}
+#bar button:hover{background:#375c9a;color:#fff}
+#bar button.go{background:#ffd34d;color:#3a2c00;border-color:#e8b93a;font-weight:700}
+.page{max-width:1700px;margin:0 auto;padding:14px 16px 40px}
+/* ── vodorovný rozdeľovač: horný a dolný panel, každý scrolluje samostatne ── */
+#hsplit{flex:1 1 auto;min-height:0;display:flex;flex-direction:column}
+#hTop{flex:0 0 auto;height:55%;min-height:64px;overflow:auto}
+#hBot{flex:1 1 auto;min-height:90px;overflow:auto}
+#hTop .page,#hBot .page{padding-top:12px;padding-bottom:20px}
+#hDrag{flex:0 0 auto;height:12px;cursor:row-resize;background:linear-gradient(#dbe5f1,#c2d2e6);
+ border-top:1px solid var(--bd);border-bottom:1px solid var(--bd);position:relative;user-select:none;touch-action:none}
+#hDrag::before{content:"";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+ width:48px;height:2px;border-radius:2px;background:#7f97b8;box-shadow:0 -4px 0 #7f97b8,0 4px 0 #7f97b8}
+#hDrag:hover{background:linear-gradient(#cddcee,#aec4e0)}
+#hDrag.drag{background:linear-gradient(#bcd0ea,#9bb6d8)}
+.sect{margin-bottom:16px}
+.langbar{background:#fff;border:1px solid var(--bd);border-radius:7px;padding:9px 13px;margin-bottom:14px;
+ display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.langbar .lb{font-size:11px;text-transform:uppercase;letter-spacing:.09em;color:#7a8899;margin-right:4px}
+.flg{background:none;border:1px solid rgba(31,56,100,.28);border-radius:4px;padding:0;cursor:pointer;
+ width:38px;height:25px;opacity:.5;overflow:hidden}
+.flg img{width:38px;height:25px;object-fit:cover;display:block}
+.flg.on{opacity:1;border-color:var(--navy);box-shadow:0 0 0 2px rgba(31,56,100,.28)}
+.langbar .info{margin-left:auto;font-size:12px;color:#8a97a6}
+.langbar .info b{color:var(--red)}
+.sect>h2{margin:0 0 8px;font-size:11.5px;text-transform:uppercase;letter-spacing:.09em;color:#7a8899;
+ display:flex;align-items:center;gap:10px}
+.sect>h2 .cnt{background:#dde6f0;color:#4a5b6d;border-radius:999px;padding:1px 9px;font-size:11px;letter-spacing:0}
+
+/* ── dlaždice kauz ── */
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(215px,1fr));gap:10px}
+.tile{background:var(--itembg);border:1px solid var(--bd);border-left:4px solid var(--navy);border-radius:6px;
+ padding:10px 12px;cursor:pointer;text-align:left;font:inherit;color:inherit}
+.tile:hover{background:#f5f9fd}
+.tile.on{background:#fff8e6;box-shadow:0 0 0 2px var(--gold);border-left-color:var(--gold)}
+.tile .tn{font-size:13px;font-weight:700;color:var(--navy);line-height:1.3}
+.tile .tk{font-size:10.5px;color:#8a97a6;letter-spacing:.04em;margin-top:3px}
+.tile .tc{display:inline-block;margin-top:7px;font-size:11px;background:#eef2f7;color:#54637a;border-radius:999px;padding:1px 9px}
+
+/* ── konania ── */
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px}
+.card{background:var(--itembg);border:1px solid var(--bd);border-radius:6px;padding:11px 13px;cursor:pointer}
+.card:hover{background:#f5f9fd}
+.card.on{background:#fff8e6;box-shadow:0 0 0 2px var(--gold)}
+.card .cn{font-size:14px;font-weight:600;color:var(--navy);line-height:1.35}
+.card .co{font-size:12px;color:#7a8899;margin-top:3px}
+.card .cb{margin-top:7px;display:flex;gap:6px;flex-wrap:wrap}
+.pill{font-size:10.5px;border-radius:999px;padding:1px 9px;background:#eef2f7;color:#54637a}
+.pill.az{background:#fff3d6;color:#8a5a00;border:1px solid var(--gold)}
+
+/* ── dokumenty + editor ── */
+.split{display:grid;grid-template-columns:minmax(420px,1fr) minmax(460px,620px);gap:14px;align-items:start}
+@media(max-width:1150px){.split{grid-template-columns:1fr}}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:760px){.cols{grid-template-columns:1fr}}
+.col h3{margin:0 0 7px;font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:#7a8899}
+.doc{background:var(--itembg);border:1px solid var(--bd);border-radius:6px;padding:9px 11px;margin-bottom:7px;cursor:pointer;position:relative}
+.doc:hover{background:#f5f9fd}
+.doc.on{background:#fff8e6;box-shadow:0 0 0 2px var(--gold)}
+.doc .dt{display:flex;justify-content:space-between;gap:8px;font-size:11.5px;color:#8a97a6;font-weight:700}
+.doc .ds{font-size:13px;color:var(--navy);font-weight:600;margin-top:2px;line-height:1.35}
+.doc .dw{margin-top:5px;display:flex;gap:5px;flex-wrap:wrap}
+.ob{font-size:11.5px;text-decoration:none;border:1px solid var(--bd);background:#fff;border-radius:4px;
+ padding:3px 10px;color:#3d4d5e;white-space:nowrap}
+.ob:hover{border-color:var(--navy);color:var(--navy);background:#f2f7fc}
+.ob.og{background:#fff8e6;border-color:var(--gold);color:#8a5a00}
+.warn{background:#fdeaea;color:#8a1c1c;border:1px solid #f0b8b8}
+.ed{background:var(--edbg);border:1px solid var(--bd);border-top:4px solid var(--navy);border-radius:7px;
+ padding:14px 16px}
+.ed h2{margin:0 0 4px;font-size:15px;color:var(--navy)}
+.ed .sub{font-size:12px;color:#8a97a6;margin-bottom:6px}
+.ramik{background:#eef4fb;border:1px solid var(--bd);border-radius:6px;padding:9px 12px;margin-top:4px}
+.hint{font-size:11.5px;color:#8a97a6;font-weight:400;text-transform:none;letter-spacing:0}
+.chk{display:flex;align-items:center;gap:7px;font-size:13px;margin-top:10px}
+.chk input{width:auto}
+#edcmt:not(:empty){background:#f7f9fc;border:1px solid var(--bd);border-radius:7px;padding:12px 14px;margin-bottom:12px}
+.edcmt-h{font-weight:700;color:var(--navy);font-size:14px;margin-bottom:8px}
+.edcmt-h .hint{display:block;margin-top:2px}
+.edcmt-c{border:1px solid var(--bd);border-radius:6px;padding:8px 10px;margin-bottom:8px;background:#fff}
+.edcmt-m{font-size:12px;color:#8a97a6;margin-bottom:3px}
+.edcmt-b{font-size:13px;color:#25303c;white-space:pre-wrap}
+.cmtbadge:empty{display:none}
+.cmtbadge{position:absolute;right:11px;bottom:9px;font-size:11px;font-weight:700;padding:2px 7px;border-radius:10px;background:#e9eef4;color:#5a6b7d;white-space:nowrap}
+.cmtbadge.un{background:#c0392b;color:#fff}
+label{display:block;font-size:13px;text-transform:uppercase;letter-spacing:.05em;color:var(--navy);font-weight:600;margin:11px 0 3px}
+input,select,textarea{width:100%;border:1px solid var(--bd);border-radius:4px;padding:7px 9px;font:inherit;background:#fff}
+textarea{min-height:2cm;height:2cm;resize:vertical;font-size:13px;line-height:1.45}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px}
+.lang{display:grid;grid-template-columns:34px 1fr auto;gap:7px;align-items:center;margin-bottom:4px}
+.otv{display:inline-block;text-decoration:none;background:var(--navy);color:#fff;border-radius:4px;
+ padding:5px 9px;font-size:12px;line-height:1}
+.otv:hover{background:#16294a}
+.origbox{background:#fff8e6;border:1px solid var(--gold);border-radius:5px;padding:10px 12px;margin-top:12px}
+.origbox a{display:inline-block;margin-top:6px;background:#ffd34d;color:#3a2c00;text-decoration:none;
+ border-radius:4px;padding:5px 12px;font-weight:700;font-size:12.5px}
+.lang .lc{font-size:10.5px;font-weight:700;color:var(--navy);text-align:center;background:#eef4fb;border-radius:3px;padding:4px 0}
+.miss{border-color:var(--red) !important;background:#fff7f7}
+.acts{display:flex;gap:7px;flex-wrap:wrap;margin-top:14px;padding-top:11px;border-top:1px solid var(--bd)}
+.msg{margin:9px 0;padding:9px 12px;border-radius:5px;font-size:13px}
+.msg.ok{background:#e9f7ef;border:1px solid #b7e2c8;color:#0B7A3B}
+.msg.err{background:#fdeaea;border:1px solid #f0b8b8;color:#8a1c1c}
+.hint{font-size:12px;color:#8a97a6}
+.empty{background:#fff;border:1px dashed var(--bd);border-radius:6px;padding:18px;text-align:center;color:#8a97a6;font-size:13px}
+.tglrow{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:2px}
+.tglb{border:1px solid var(--bd);background:#fff;border-radius:6px;padding:7px 14px;font:inherit;
+ font-size:13px;cursor:pointer;color:#3d4d5e}
+.tglb:hover{border-color:var(--navy);color:var(--navy);background:#f2f7fc}
+.tglb.on{background:var(--navy);color:#fff;border-color:var(--navy);font-weight:700;
+ box-shadow:0 0 0 2px rgba(31,56,100,.22)}
+.dvarady{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:start}
+@media(max-width:760px){.dvarady{grid-template-columns:1fr}}
+.tglrow.akc .tglb{border-color:#b7e2c8;color:#0B7A3B;background:#f4fbf7}
+.tglrow.akc .tglb:hover{border-color:#0B7A3B;background:#e9f7ef;color:#0B7A3B}
+.tglrow.akc .tglb.on{background:#0B7A3B;color:#fff;border-color:#0B7A3B;
+ box-shadow:0 0 0 2px rgba(11,122,59,.25)}
+.katbox{border:1px dashed var(--bd);border-radius:8px;padding:11px 13px;margin-top:14px;background:#fbfcfe}
+.kath{font-size:13px;font-weight:700;color:var(--navy);margin-bottom:8px}
+.katl{font-size:11px;letter-spacing:.06em;color:#7a8899;margin:6px 0 5px}
+textarea.suh{min-height:2cm;height:2cm;line-height:1.45;font-size:13px}
+.j1{display:grid;grid-template-columns:40px 1fr;gap:8px;align-items:start}
+.jl{font-size:11px;font-weight:700;color:#fff;background:var(--navy);text-align:center;border-radius:3px;padding:6px 0}
+.jn{font-size:11px;margin:3px 0 0 48px}
+.hint{font-size:11.5px;color:#8a97a6;font-weight:400;text-transform:none;letter-spacing:0}
+.ramik{background:#eef4fb;border:1px solid var(--bd);border-radius:6px;padding:9px 12px;margin-top:4px}
+.jall{margin:2px 0 8px 48px;font-size:12px}
+.jall>summary{cursor:pointer;color:#5a6b7e;font-size:11px}
+.jall>summary:hover{color:var(--navy)}
+.jall-row{display:grid;grid-template-columns:34px 1fr;gap:8px;padding:3px 0;border-top:1px solid #eef2f7}
+.jall-l{font-size:10.5px;font-weight:700;color:#fff;background:#7a8899;text-align:center;border-radius:3px;padding:3px 0;height:fit-content}
+.jall-l.cur{background:var(--navy)}
+.jall-t{white-space:pre-wrap;color:#34435a}
+.jall-t.emp{color:#b9c4d1}
+.thr{display:inline-flex;align-items:center;justify-content:center;min-width:18px;height:18px;padding:0 5px;border-radius:10px;background:var(--navy);color:#fff;font-size:11px;font-weight:800;vertical-align:middle}
+</style></head>
+<body>
+
+<div id="bar">
+ <b>FIA FOX · editor registra</b>
+ <button onclick="document.getElementById('fl').click()">📂 Načítať JSON</button>
+ <input type="file" id="fl" accept=".json" style="display:none">
+ <button onclick="loadWeb()">🌐 Načítať z webu</button>
+ <button onclick="aktualizuj()" title="Stiahne najnovšiu verziu formulára z repozitára">⟳ Aktualizovať formulár</button>
+ <span style="font-size:11.5px;opacity:.7" id="ver"></span>
+ <span class="sp"></span>
+ <span id="stat" style="font-size:12.5px;opacity:.85"></span>
+ <button onclick="kontrola()">✔ Kontrola</button>
+ <button class="go" onclick="ulozDoRepa()">⬆ Uložiť do repa</button>
+ <button onclick="stiahni()" title="Záloha na disk">⬇ JSON</button>
+</div>
+
+<div id="hsplit">
+ <div id="hTop">
+  <div class="page">
+   <div class="langbar">
+    <span class="lb">Jazyk zobrazenia</span>
+    <span id="flags"></span>
+    <span class="info" id="langinfo"></span>
+    <label style="margin-left:auto;font-size:12px;color:#5a6b7d;display:flex;align-items:center;gap:6px;white-space:nowrap">🎨 Farba položiek <input type="color" id="itembgpick" value="#D9E6F4" oninput="setItemBg(this.value)" style="width:34px;height:22px;border:1px solid var(--bd);border-radius:4px;padding:0;cursor:pointer;background:none"><button type="button" onclick="resetItemBg()" title="Späť na predvolenú belasú" style="border:1px solid var(--bd);background:#fff;border-radius:4px;font-size:11px;padding:2px 7px;cursor:pointer">↺</button></label>
+    <label style="font-size:12px;color:#5a6b7d;display:flex;align-items:center;gap:6px;white-space:nowrap">🖼️ Pozadie stránky <input type="color" id="pagebgpick" value="#EEF3F8" oninput="setPageBg(this.value)" style="width:34px;height:22px;border:1px solid var(--bd);border-radius:4px;padding:0;cursor:pointer;background:none"><button type="button" onclick="resetPageBg()" title="Späť na predvolené pozadie" style="border:1px solid var(--bd);background:#fff;border-radius:4px;font-size:11px;padding:2px 7px;cursor:pointer">↺</button></label>
+    <label style="font-size:12px;color:#5a6b7d;display:flex;align-items:center;gap:6px;white-space:nowrap">📝 Pozadie formulára <input type="color" id="edbgpick" value="#FFFFFF" oninput="setEdBg(this.value)" style="width:34px;height:22px;border:1px solid var(--bd);border-radius:4px;padding:0;cursor:pointer;background:none"><button type="button" onclick="resetEdBg()" title="Späť na bielu" style="border:1px solid var(--bd);background:#fff;border-radius:4px;font-size:11px;padding:2px 7px;cursor:pointer">↺</button></label>
+   </div>
+
+   <div style="background:#FFF8E0;border:1px solid #E8C86A;border-radius:7px;padding:9px 13px;margin-bottom:14px">
+    <label style="display:block;font-size:12.5px;color:#8a6a00;text-transform:none;letter-spacing:0;font-weight:600;margin:0 0 5px">🗒️ Príkaz pre Claude <span style="font-weight:400;font-size:11px">(uloží sa spolu s dátami — Claude ho prečíta po tvojom uložení)</span></label>
+    <textarea id="claudePrikaz" rows="1" oninput="if(D)D.claudePrikaz=this.value" style="width:100%;box-sizing:border-box;height:33px;min-height:33px;font:13px/1.4 inherit;border:1px solid var(--bd);border-radius:6px;padding:6px 8px;resize:vertical" placeholder="Napr.: opravené polia doplň do všetkých 9 jazykov"></textarea>
+   </div>
+
+   <div class="sect">
+    <h2>Kauzy <span class="cnt" id="c-kz">0</span>
+     <button onclick="selKz=null;selKa=null;selPo=null;render()" style="margin-left:auto">Zobraziť všetko</button></h2>
+    <div class="tiles" id="tiles"><div class="empty">Načítaj dáta tlačidlom hore.</div></div>
+   </div>
+
+   <div class="sect">
+    <h2>Konania <span class="cnt" id="c-ka">0</span>
+     <button onclick="prepniRadenie()" id="radbtn" style="margin-left:auto">↓ Najnovšie</button>
+     <button onclick="novaKarta()">+ Nové konanie</button></h2>
+    <div class="cards" id="cards"><div class="empty">—</div></div>
+   </div>
+
+   <div class="sect">
+    <h2>Dokumenty <span class="cnt" id="c-po">0</span>
+     <button onclick="prepniRadenieDoc()" id="raddoc" style="margin-left:auto">↓ Najnovšie</button>
+     <button onclick="novaPolozka()">+ Nový dokument</button></h2>
+    <div class="cols">
+     <div class="col"><h3>▲ Odoslané <button onclick="novaPolozka('sent')" style="font-size:11px;padding:2px 8px;margin-left:6px">+ Pridať</button></h3><div id="dsent"><div class="empty">—</div></div></div>
+     <div class="col"><h3>▼ Došlé <button onclick="novaPolozka('recv')" style="font-size:11px;padding:2px 8px;margin-left:6px">+ Pridať</button></h3><div id="drecv"><div class="empty">—</div></div></div>
+    </div>
+   </div>
+  </div>
+ </div>
+
+ <div id="hDrag" title="Ťahaj hore/dole · dvojklik = 50/50"></div>
+
+ <div id="hBot">
+  <div class="page">
+   <div class="ed" id="ed"><h2>Editor</h2><p class="hint">Vyber kauzu, konanie alebo dokument.</p></div>
+   <div id="edcmt"></div>
+  </div>
+ </div>
+</div>
+
+<script>
+const L9=["de","en","sk","hr","pl","es","it","fr","sv"];
+const RAW="https://raw.githubusercontent.com/peterferenc246-design/peterferenc246-design.github.io/koncept/_data/fia_data.json";
+const VIEWER="https://peterferenc246-design.github.io/fia/viewer.html";
+const CUSDIS_DASH="https://cusdis.com/dashboard/project/6fdea40e-6f8a-4877-b2e0-7b83dee8ee45";
+const VERZIA="2026-07-25 · 9-jaz náhľad (prototyp)";
+let D=null, selKz=null, selKa=null, selPo=null, zmenene=false, AKCIA='edit';
+let LANG='sk';
+const FLAG={de:"de",en:"gb",sk:"sk",hr:"hr",pl:"pl",es:"es",it:"it",fr:"fr",sv:"se"};
+function kresliVlajky(){
+ document.getElementById('flags').innerHTML = L9.map(L=>
+  '<button class="flg'+(L===LANG?' on':'')+'" data-l="'+L+'" title="'+L.toUpperCase()+'" onclick="setLang(\''+L+'\')">'
+  +'<img src="https://flagcdn.com/'+FLAG[L]+'.svg" alt="'+L.toUpperCase()+'"></button>').join('');
+}
+function setLang(L){ LANG=L; kresliVlajky(); render(); }
+function txt(o){ if(!o) return ''; return o[LANG] || ''; }
+function txtFb(o){ if(!o) return ''; return o[LANG] || o.sk || o.de || o.en || Object.values(o).find(v=>v) || ''; }
+document.getElementById('ver').textContent='v '+VERZIA;
+
+function stat(t){document.getElementById('stat').textContent=t;}
+function esc(s){return (s||"").replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+function kartaById(id){return (D.karty||[]).find(k=>k.id===id);}
+function nazovKarty(k){return txtFb(k.nazov)||k.id;}
+function predmet(p){return txtFb(p.subj9)||p.subj||'(bez predmetu)';}
+/* ── VLÁKNO: kľúč vlákna zo subjektu koreňového dokumentu ── */
+function slug(s){return (s||'').toString().toLowerCase()
+  .normalize('NFD').replace(/[\u0300-\u036f]/g,'')      // diakritika preč
+  .replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,60);}
+/* nájdi koreň vlákna: nasleduj replyTo, kým existuje predchodca v tej istej karte */
+function threadRoot(p){
+  var guard=0, cur=p;
+  while(cur && cur.replyTo && guard++<50){
+    var parent=(D.polozky||[]).find(x=>x.karta===cur.karta && x!==cur && predmet(x)===cur.replyTo);
+    if(!parent) break; cur=parent;
+  }
+  return cur;
+}
+/* po zmene replyTo prepočítaj thread pre celú kartu (koreň + všetky odpovede zdieľajú kľúč koreňa) */
+function rewireThreads(karta){
+  var list=(D.polozky||[]).filter(x=>x.karta===karta);
+  list.forEach(function(p){
+    if(p.replyTo){                       // je to odpoveď → thread = kľúč koreňa
+      var r=threadRoot(p);
+      var key='thr-'+slug(predmet(r));
+      p.thread=key; r.thread=key;         // koreň dostane ten istý kľúč
+    } else {
+      // koreň bez replyTo: thread nastav LEN ak naň niekto odpovedá
+      var hasChild=list.some(x=>x.replyTo===predmet(p));
+      p.thread = hasChild ? ('thr-'+slug(predmet(p))) : '';
+    }
+  });
+}
+
+function dkey(v){
+ v=(v||'').trim();
+ let m=v.match(/^(\d{4})-(\d{2})-(\d{2})$/);        if(m) return m[1]+m[2]+m[3];
+ m=v.match(/^(\d{1,2})\.\s*(\d{1,2})\.\s*(\d{4})$/); if(m) return m[3]+('0'+m[2]).slice(-2)+('0'+m[1]).slice(-2);
+ return '00000000';
+}
+let radDesc=true;
+function prepniRadenie(){ radDesc=!radDesc; render(); }
+let docDesc=true;
+function prepniRadenieDoc(){ docDesc=!docDesc; render(); }
+function chyba9(o){return L9.filter(L=>!((o||{})[L]||'').trim()).length;}
+
+/* ── načítanie ── */
+document.getElementById('fl').addEventListener('change',e=>{
+ const f=e.target.files[0]; if(!f) return;
+ const r=new FileReader();
+ r.onload=()=>{ try{ D=JSON.parse(r.result); poNacitani('súbor '+f.name);}catch(err){alert('Chybný JSON: '+err);} };
+ r.readAsText(f,'utf-8');
+});
+function loadWeb(){ stat('načítavam dáta…');
+ document.getElementById('tiles').innerHTML='<div class="empty">Načítavam dáta z repozitára…</div>';
+ fetch(RAW+'?v='+Date.now())
+  .then(r=>{ if(!r.ok) throw new Error('server vrátil '+r.status); return r.json(); })
+  .then(j=>{D=j;poNacitani('web');})
+  .catch(e=>{ stat('načítanie zlyhalo');
+   document.getElementById('tiles').innerHTML='<div class="empty" style="color:#8a1c1c;border-color:#f0b8b8">'
+    +'Načítanie dát zlyhalo: '+esc(String(e))+'<br><br>Skús tlačidlo <b>Načítať JSON</b> a vyber súbor z disku.</div>'; });
+}
+function pripravKauzy(){
+ D.kauzy_reg = D.kauzy_reg || [];
+ D.kauzy_reg.forEach(z=>{ z.nazov=z.nazov||{}; z.warn=z.warn||{}; z.jur=z.jur||[]; z.ids=z.ids||[]; });
+}
+function kauzaKarty(cid){ const z=(D.kauzy_reg||[]).find(z=>(z.ids||[]).indexOf(cid)>=0); return z?z.spis:''; }
+function kauzaPodla(spis){ return (D.kauzy_reg||[]).find(z=>z.spis===spis); }
+function poNacitani(z){ D.karty=D.karty||[];D.polozky=D.polozky||[];D.suhrny=D.suhrny||{}; pripravKauzy();
+ if(!D.claudePrikaz) D.claudePrikaz='PRÍKAZ PRE CLAUDE — po každom mojom uložení skontroluj, ktoré polia som zmenil oproti predošlej verzii; ak je oprava len v jednom jazyku, prelož ju a doplň do všetkých 9 jazykov (de, en, sk, hr, pl, es, it, fr, sv).';
+ var _cp=document.getElementById('claudePrikaz'); if(_cp) _cp.value=D.claudePrikaz;
+ selKz=selKa=selPo=null; const obn=obnovUI(); kresliVlajky();
+ stat(D.karty.length+' konaní · '+D.polozky.length+' dokumentov · '+z); render(); cmtLoadCounts();
+ if(obn) setTimeout(()=>{var e=document.querySelector('.doc.on')||document.querySelector('.card.on')||document.querySelector('.tile.on'); if(e) e.scrollIntoView({block:'nearest'});},80); }
+function aktualizuj(){
+ window.__akt=true;
+ try{ sessionStorage.removeItem('fia_stav'); }catch(e){}
+ if(!zmenene){                      // nic rozrobene -> stiahni cerstve data
+  location.replace(location.pathname.split('?')[0]+'?v='+Date.now());
+  return;
+ }
+ try{
+  if(D) sessionStorage.setItem('fia_stav', JSON.stringify({
+    D:D, selKz:selKz, selKa:selKa, selPo:selPo, LANG:LANG, radDesc:radDesc, docDesc:docDesc,
+    y:(document.getElementById('hTop')||{}).scrollTop||0,
+    y2:(document.getElementById('hBot')||{}).scrollTop||0, t:Date.now()}));
+ }catch(e){
+  if(!confirm('Stav sa nepodarilo odložiť ('+e+').\nPokračovať a načítať formulár nanovo?')) return;
+ }
+ location.replace(location.pathname.split('?')[0]+'?v='+Date.now());
+}
+function obnovStav(){
+ let raw=null;
+ try{ raw=sessionStorage.getItem('fia_stav'); }catch(e){}
+ if(!raw) return false;
+ try{
+  const st=JSON.parse(raw);
+  sessionStorage.removeItem('fia_stav');
+  D=st.D; selKz=st.selKz; selKa=st.selKa; selPo=st.selPo; LANG=st.LANG||'sk';
+  if(typeof st.radDesc==='boolean') radDesc=st.radDesc;
+  if(typeof st.docDesc==='boolean') docDesc=st.docDesc;
+  D.karty=D.karty||[]; D.polozky=D.polozky||[]; D.suhrny=D.suhrny||{}; pripravKauzy();
+  kresliVlajky(); render();
+  stat(D.karty.length+' konaní · '+D.polozky.length+' dokumentov · obnovené po aktualizácii');
+  document.getElementById('ed').insertAdjacentHTML('afterbegin',
+   '<div class="msg ok">Formulár aktualizovaný na v '+VERZIA+'. Rozpracované dáta aj výber zostali zachované.<br>'
+   +'<button style="margin-top:7px" onclick="if(confirm(\'Zahodiť rozpracované zmeny a načítať čerstvé dáta z webu?\')){zmenene=false;loadWeb();}">'
+   +'⟲ Načítať čerstvé dáta z webu</button></div>');
+  setTimeout(()=>{var T=document.getElementById('hTop'),B=document.getElementById('hBot');
+   if(T)T.scrollTop=st.y||0; if(B)B.scrollTop=st.y2||0;},60);
+  return true;
+ }catch(e){ try{sessionStorage.removeItem('fia_stav');}catch(x){} return false; }
+}
+
+/* ── trvalý stav (localStorage): výber + triedenie + jazyk pretrvajú cez refresh aj zatvorenie okna ── */
+const UIKEY='fia_ui_v1';
+function ulozUI(){ try{ localStorage.setItem(UIKEY, JSON.stringify({kz:selKz,ka:selKa,po:selPo,rad:radDesc,dd:docDesc,lang:LANG})); }catch(e){} }
+function obnovUI(){ try{
+  const u=JSON.parse(localStorage.getItem(UIKEY)||'null'); if(!u) return false;
+  if(typeof u.rad==='boolean') radDesc=u.rad;
+  if(typeof u.dd==='boolean') docDesc=u.dd;
+  if(u.lang && L9.indexOf(u.lang)>=0) LANG=u.lang;
+  if(u.kz && kauzaPodla(u.kz)) selKz=u.kz;
+  if(u.ka && kartaById(u.ka)){ selKa=u.ka; if(!selKz) selKz=kauzaKarty(u.ka)||null; }
+  if(typeof u.po==='number' && D.polozky[u.po] && (!selKa || D.polozky[u.po].karta===selKa)){
+    selPo=u.po; const p=D.polozky[u.po]; if(!selKa) selKa=p.karta; if(!selKz) selKz=kauzaKarty(p.karta)||null;
+  }
+  return (selKz||selKa||selPo!==null);
+}catch(e){ return false; } }
+
+/* ── vykreslenie ── */
+function render(){ if(!D) return; tiles(); cards(); docs(); editor(); langinfo();
+ const b=document.getElementById('radbtn'); if(b) b.textContent = radDesc?'↓ Najnovšie':'↑ Najstaršie';
+ const bd=document.getElementById('raddoc'); if(bd) bd.textContent = docDesc?'↓ Najnovšie':'↑ Najstaršie';
+ renderEdComments();
+ ulozUI();
+}
+/* Komentáre k dokumentu v editore — page-id vlastným SHA-1 (bez prehliadačového crypto), komentáre cez Cusdis API + zoznam (bez SDK, bez iframe); celé v try/catch, nikdy nerozbije render */
+function edSha1(msg){
+  function rol(n,s){return (n<<s)|(n>>>(32-s));}
+  function hx(v){var s="";for(var i=7;i>=0;i--){s+=((v>>>(i*4))&0x0f).toString(16);}return s;}
+  msg=unescape(encodeURIComponent(msg));
+  var W=new Array(80),H0=0x67452301,H1=0xEFCDAB89,H2=0x98BADCFE,H3=0x10325476,H4=0xC3D2E1F0;
+  var A,B,C,D,E,t,i,bs,ml=msg.length,wa=[];
+  for(i=0;i<ml-3;i+=4){wa.push(msg.charCodeAt(i)<<24|msg.charCodeAt(i+1)<<16|msg.charCodeAt(i+2)<<8|msg.charCodeAt(i+3));}
+  switch(ml%4){case 0:i=0x080000000;break;case 1:i=msg.charCodeAt(ml-1)<<24|0x0800000;break;case 2:i=msg.charCodeAt(ml-2)<<24|msg.charCodeAt(ml-1)<<16|0x08000;break;case 3:i=msg.charCodeAt(ml-3)<<24|msg.charCodeAt(ml-2)<<16|msg.charCodeAt(ml-1)<<8|0x80;break;}
+  wa.push(i);while((wa.length%16)!=14)wa.push(0);wa.push(ml>>>29);wa.push((ml<<3)&0x0ffffffff);
+  for(bs=0;bs<wa.length;bs+=16){
+    for(i=0;i<16;i++)W[i]=wa[bs+i];
+    for(i=16;i<=79;i++)W[i]=rol(W[i-3]^W[i-8]^W[i-14]^W[i-16],1);
+    A=H0;B=H1;C=H2;D=H3;E=H4;
+    for(i=0;i<=19;i++){t=(rol(A,5)+((B&C)|(~B&D))+E+W[i]+0x5A827999)&0x0ffffffff;E=D;D=C;C=rol(B,30);B=A;A=t;}
+    for(i=20;i<=39;i++){t=(rol(A,5)+(B^C^D)+E+W[i]+0x6ED9EBA1)&0x0ffffffff;E=D;D=C;C=rol(B,30);B=A;A=t;}
+    for(i=40;i<=59;i++){t=(rol(A,5)+((B&C)|(B&D)|(C&D))+E+W[i]+0x8F1BBCDC)&0x0ffffffff;E=D;D=C;C=rol(B,30);B=A;A=t;}
+    for(i=60;i<=79;i++){t=(rol(A,5)+(B^C^D)+E+W[i]+0xCA62C1D6)&0x0ffffffff;E=D;D=C;C=rol(B,30);B=A;A=t;}
+    H0=(H0+A)&0x0ffffffff;H1=(H1+B)&0x0ffffffff;H2=(H2+C)&0x0ffffffff;H3=(H3+D)&0x0ffffffff;H4=(H4+E)&0x0ffffffff;
+  }
+  return (hx(H0)+hx(H1)+hx(H2)+hx(H3)+hx(H4)).toLowerCase();
+}
+function edPageId(p){var sj=p.subj9||{};var subj=sj.sk||Object.values(sj).find(function(v){return v;})||"";return "fia-"+edSha1((p.karta||"")+"|"+(p.date||"")+"|"+subj).slice(0,12);}
+/* Počet komentárov na dokument + neprečítané (značka "💬 neprečítané/celkom") — počet z Cusdis API, prečítané v localStorage; celé v try/catch */
+var CMT_TOTAL={}, CMT_SEEN={};
+try{ CMT_SEEN=JSON.parse(localStorage.getItem("fia_cmt_seen")||"{}")||{}; }catch(e){ CMT_SEEN={}; }
+function cmtSaveSeen(){ try{ localStorage.setItem("fia_cmt_seen", JSON.stringify(CMT_SEEN)); }catch(e){} }
+function cmtRefreshBadges(){ try{ document.querySelectorAll(".cmtbadge").forEach(function(el){ var pid=el.getAttribute("data-pid"); if(!pid) return; var tot=CMT_TOTAL[pid]; if(tot==null||tot===0){ el.textContent=""; el.className="cmtbadge"; return; } var seen=CMT_SEEN[pid]||0; var un=tot-seen; if(un<0)un=0; el.textContent="\ud83d\udcac "+un+"/"+tot; el.className="cmtbadge"+(un>0?" un":""); }); }catch(e){} }
+var __cmtLoaded=false;
+function cmtLoadCounts(){ if(__cmtLoaded||!D) return; __cmtLoaded=true; try{ (D.polozky||[]).forEach(function(p,i){ var pid; try{ pid=edPageId(p); }catch(e){ return; } if(CMT_TOTAL[pid]!=null) return; setTimeout(function(){ try{ fetch("https://cusdis.com/api/open/comments?page=1&appId=6fdea40e-6f8a-4877-b2e0-7b83dee8ee45&pageId="+encodeURIComponent(pid)).then(function(r){return r.json();}).then(function(j){ var d=(j&&j.data)||{}; CMT_TOTAL[pid]=(d.commentCount!=null)?d.commentCount:((d.data||[]).length); cmtRefreshBadges(); }).catch(function(e){}); }catch(e){} }, i*25); }); }catch(e){} }
+function cmtMarkRead(pid){ try{ if(pid&&CMT_TOTAL[pid]!=null){ CMT_SEEN[pid]=CMT_TOTAL[pid]; cmtSaveSeen(); cmtRefreshBadges(); } }catch(e){} }
+var edCmtSel=-2;
+function renderEdComments(){
+  var box=document.getElementById("edcmt"); if(!box) return;
+  if(selPo===null || !D.polozky[selPo]){ if(edCmtSel!==null){box.innerHTML="";edCmtSel=null;} return; }
+  if(selPo===edCmtSel) return;
+  edCmtSel=selPo;
+  var p=D.polozky[selPo], pid;
+  try{ pid=edPageId(p); }catch(e){ box.innerHTML=""; return; }
+  box.innerHTML='<div class="edcmt-h">\ud83d\udcac Komentáre k dokumentu <span class="hint">Iba schválené. Čakajúce schváliš v paneli Cusdis (tlačidlo vyššie).</span></div><div class="hint" style="padding:2px 0">Načítavam…</div>';
+  var mySel=selPo;
+  try{
+    fetch("https://cusdis.com/api/open/comments?page=1&appId=6fdea40e-6f8a-4877-b2e0-7b83dee8ee45&pageId="+encodeURIComponent(pid))
+    .then(function(r){return r.json();})
+    .then(function(j){
+      if(mySel!==edCmtSel) return;
+      var d=(j&&j.data)||{}, arr=(d.data)||[];
+      var tot=(d.commentCount!=null)?d.commentCount:arr.length;
+      CMT_TOTAL[pid]=tot; CMT_SEEN[pid]=tot; cmtSaveSeen(); cmtRefreshBadges();
+      var h='<div class="edcmt-h">\ud83d\udcac Komentáre k dokumentu ('+tot+') <span class="hint">Iba schválené. Čakajúce schváliš v paneli Cusdis (tlačidlo vyššie).</span></div>';
+      if(!arr.length){ h+='<div class="hint" style="padding:2px 0">Zatiaľ žiadne schválené komentáre.</div>'; }
+      else { arr.forEach(function(c){ h+='<div class="edcmt-c"><div class="edcmt-m"><b>'+esc(c.by_nickname||"—")+'</b> \u00b7 '+esc(String(c.createdAt||"").slice(0,16).replace("T"," "))+'</div><div class="edcmt-b">'+esc(c.content||"")+'</div></div>'; }); }
+      box.innerHTML=h;
+    })
+    .catch(function(e){ if(mySel!==edCmtSel) return; box.innerHTML='<div class="edcmt-h">\ud83d\udcac Komentáre k dokumentu</div><div class="hint" style="padding:2px 0">Komentáre sa nepodarilo načítať. Otvor ich v paneli Cusdis tlačidlom vyššie.</div>'; });
+  }catch(e){ box.innerHTML='<div class="edcmt-h">\ud83d\udcac Komentáre k dokumentu</div>'; }
+}
+function langinfo(){
+ if(!D){document.getElementById('langinfo').textContent='';return;}
+ const kz=(D.kauzy_reg||[]).filter(z=>!((z.nazov||{})[LANG]||'').trim()).length;
+ const kk=(D.karty||[]).filter(k=>!((k.nazov||{})[LANG]||'').trim()).length;
+ const pp=(D.polozky||[]).filter(p=>!((p.subj9||{})[LANG]||'').trim()).length;
+ const uu=(D.polozky||[]).filter(p=>!((p.urls||{})[LANG]||'').trim()).length;
+ const el=document.getElementById('langinfo');
+ el.innerHTML = (kz+kk+pp+uu)
+  ? 'V jazyku '+LANG.toUpperCase()+' chýba: <b>'+kz+'</b> názvov káuz · <b>'+kk+'</b> názvov konaní · <b>'+pp+'</b> predmetov · <b>'+uu+'</b> odkazov'
+  : 'V jazyku '+LANG.toUpperCase()+' je všetko vyplnené.';
+}
+
+function tiles(){
+ const zoz=(D.kauzy_reg||[]);
+ document.getElementById('c-kz').textContent=zoz.length;
+ document.getElementById('tiles').innerHTML = zoz.map(z=>{
+  const nk=(z.ids||[]).filter(id=>kartaById(id)).length;
+  const nd=(D.polozky||[]).filter(p=>(z.ids||[]).indexOf(p.karta)>=0).length;
+  const chL=!((z.nazov||{})[LANG]||'').trim();
+  const fl=(z.jur||[]).map(j=> j==='eu' ? '🇪🇺'
+        : '<img src="https://flagcdn.com/'+(j==='sk'?'sk':j)+'.svg" style="width:16px;height:11px;object-fit:cover;border-radius:2px;vertical-align:-1px">').join(' ');
+  return '<button class="tile'+(selKz===z.spis?' on':'')+'" onclick="pickKz(\''+z.spis.replace(/'/g,"\'")+'\')">'
+   +'<div style="margin-bottom:4px">'+fl+'</div>'
+   +'<div class="tn">'+esc(txtFb(z.nazov)||z.spis)+'</div>'
+   +'<div class="tk">'+esc(z.spis)+'</div>'
+   +(((z.warn||{})[LANG]||'')?'<div style="font-size:11px;color:var(--red);font-style:italic;font-weight:700;margin-top:5px">'+esc(z.warn[LANG])+'</div>':'')
+   +'<span class="tc">'+nk+' konaní · '+nd+' dok.</span>'
+   +(chL?'<span class="pill warn" style="margin-left:6px">chýba '+LANG.toUpperCase()+'</span>':'')
+   +'</button>';}).join('') || '<div class="empty">Žiadne kauzy.</div>';
+}
+function cards(){
+ const kz=selKz?kauzaPodla(selKz):null;
+ const zoz=(D.karty||[]).filter(k=>!kz||(kz.ids||[]).indexOf(k.id)>=0)
+   .slice().sort((a,b)=>{const x=dkey(a.date),y=dkey(b.date); return radDesc? y.localeCompare(x): x.localeCompare(y);});
+ document.getElementById('c-ka').textContent=zoz.length;
+ document.getElementById('cards').innerHTML = zoz.map(k=>{
+  const n=(D.polozky||[]).filter(p=>p.karta===k.id).length;
+  const ch=chyba9(k.nazov); const chL=!((k.nazov||{})[LANG]||'').trim();
+  return '<div class="card'+(selKa===k.id?' on':'')+'" onclick="pickKa(\''+k.id.replace(/'/g,"\\'")+'\')">'
+   +'<div class="cn">'+esc(nazovKarty(k))+'</div>'
+   +(txtFb(k.podtitul)?'<div style="font-size:12.5px;color:#3d4d5e;margin:2px 0 3px;line-height:1.3">'+esc(txtFb(k.podtitul))+'</div>':'')
+   +((txtFb(k.meta)||txtFb(k.organ))?'<div class="co">'+esc(txtFb(k.meta)||txtFb(k.organ))+'</div>':'')
+   +'<div class="cb"><span class="pill">'+esc(k.date||'bez dátumu')+'</span>'
+   +'<span class="pill az">'+esc(k.az||'bez značky')+'</span>'
+   +'<span class="pill">'+n+' dok.</span>'
+   +(chL?'<span class="pill warn">chýba '+LANG.toUpperCase()+'</span>':'')+(ch?'<span class="pill">bez '+ch+' jaz.</span>':'')+'</div></div>';}).join('')
+  || '<div class="empty">Žiadne konania'+(selKz?' v tejto kauze':'')+'.</div>';
+}
+function docs(){
+ const kzo=selKz?kauzaPodla(selKz):null;
+ const zoz=(D.polozky||[]).filter(p=>(!selKa||p.karta===selKa)&&(!kzo||(kzo.ids||[]).indexOf(p.karta)>=0))
+   .slice().sort((a,b)=>{const x=dkey(a.date),y=dkey(b.date); return docDesc? y.localeCompare(x): x.localeCompare(y);});
+ document.getElementById('c-po').textContent=zoz.length;
+ const thrNum={};
+ {const gr={};
+  zoz.forEach(p=>{if(p.thread){(gr[p.thread]=gr[p.thread]||[]).push(p);}});
+  Object.keys(gr).forEach(t=>{
+    const arr=gr[t], taken={};
+    arr.forEach(p=>{const n=parseInt(p.thrNo,10); if(!isNaN(n)){thrNum[D.polozky.indexOf(p)]=n;taken[n]=true;}});
+    const autos=arr.filter(p=>isNaN(parseInt(p.thrNo,10))).slice().sort((a,b)=>dkey(a.date).localeCompare(dkey(b.date)));
+    let next=1; autos.forEach(p=>{while(taken[next])next++; thrNum[D.polozky.indexOf(p)]=next; taken[next]=true;});
+  });}
+ const kresli=arr=>arr.map(p=>{const i=D.polozky.indexOf(p); let _cpid=""; try{_cpid=edPageId(p);}catch(e){}
+  const cs=chyba9(p.subj9), cu=chyba9(p.urls);
+  const csL=!((p.subj9||{})[LANG]||'').trim(), cuL=!((p.urls||{})[LANG]||'').trim();
+  return '<div class="doc'+(selPo===i?' on':'')+'" onclick="pickPo('+i+')">'
+   +'<div class="dt"><span>'+(thrNum[i]?'<span class="thr" title="Vlákno · '+thrNum[i]+'. dokument'+(p.thrNo?' (ručne)':' (podľa dátumu)')+'">'+thrNum[i]+'</span> ':'')+esc(p.date||'—')+'</span><span>'+esc(p.az||'')+'</span></div>'
+   +'<div class="ds">'+esc(predmet(p))+'</div>'
+   +'<div class="dw">'
+   +(p.dolezite?'<span class="pill warn">❗ dôležité</span>':'')
+   +'<span class="pill">'+(p.access==='pw'?'🔒 heslo':'🌐 verejné')+'</span>'
+   +(p.summodId?'<span class="pill">súhrn</span>':'')
+   +(p.law?'<span class="pill">predpis</span>':'')
+   +(p.bezDatumu?'<span class="pill">bez dátumu</span>':'')
+   +(csL?'<span class="pill warn">predmet '+LANG.toUpperCase()+'</span>':'')
+   +(cuL?'<span class="pill warn">odkaz '+LANG.toUpperCase()+'</span>':'')
+   +(cs&&!csL?'<span class="pill">predmet bez '+cs+'</span>':'')
+   +(cu&&!cuL?'<span class="pill">odkaz bez '+cu+'</span>':'')
+   +'<span class="cmtbadge" data-pid="'+_cpid+'"></span>'
+   +'</div>'
+   +'<div class="dw" style="margin-top:6px">'
+   +(((p.urls||{})[LANG])?'<a class="ob" href="'+esc(p.urls[LANG])+'" target="_blank" rel="noopener" onclick="event.stopPropagation()">📄 Otvoriť dokument</a>':'<span class="pill warn">bez odkazu v '+LANG.toUpperCase()+'</span>')
+   +'</div></div>';}).join('');
+ const s=zoz.filter(p=>p.dir==='sent'), r=zoz.filter(p=>p.dir!=='sent');
+ const emptyBtn='<div class="empty" style="padding:12px"><button onclick="novaPolozka()" style="font-size:13px;padding:6px 14px;border:1px dashed #7a8899;border-radius:6px;background:#f5f8fb;cursor:pointer;color:var(--navy)">➕ Pridať dokument</button></div>';
+ document.getElementById('dsent').innerHTML=kresli(s)||(selKa?emptyBtn:'<div class="empty">—</div>');
+ document.getElementById('drecv').innerHTML=kresli(r)||(selKa?emptyBtn:'<div class="empty">—</div>');
+ cmtRefreshBadges();
+}
+function pickKz(k){selKz=(selKz===k?null:k); selKa=null; selPo=null; render();}
+function pickKa(c){selKa=(selKa===c?null:c); selPo=null; selKz=selKa?kauzaKarty(c):selKz; render();}
+function pickPo(i){AKCIA='edit';selPo=(selPo===i?null:i); if(selPo!==null){const p=D.polozky[i]; selKa=p.karta; selKz=kauzaKarty(p.karta);} render();}
+
+/* ── editor ── */
+function pole(l,v,on){return '<label>'+l+'</label><input value="'+esc(v)+'" oninput="'+on+'">';}
+function ta(l,v,on){return '<label>'+l+'</label><textarea oninput="'+on+'">'+esc(v)+'</textarea>';}
+function chk(l,v,on){return '<div class="chk"><input type="checkbox" '+(v?'checked':'')+' onchange="'+on+'"><span>'+l+'</span></div>';}
+const OBLASTI=[['kartell','Kartelové právo'],['gdpr','GDPR'],['strafrecht','Trestné oznámenie'],['majetok','Zasahovanie do majetkových práv']];
+function oblastToggle(o,code,on){o.area=o.area||[];var i=o.area.indexOf(code);if(on){if(i<0)o.area.push(code);}else{if(i>=0)o.area.splice(i,1);}}
+function oblastChk(arr,P){arr=arr||[];return '<label>Oblasť</label><div class="ramik">'+OBLASTI.map(function(o){var on=arr.indexOf(o[0])>=0;return '<div class="chk"><input type="checkbox" '+(on?'checked':'')+' onchange="oblastToggle('+P+',\''+o[0]+'\',this.checked);render()"><span>'+o[1]+'</span></div>';}).join('')+'</div>';}
+function zostavOrgan(o){
+ if(!o.organ_txt){alert('Najprv vyplň pole „Orgán (text)".');return;}
+ var riad='⚖️ Orgán: '+o.organ_txt;
+ if(o.az) riad+=' · Sp. zn.: '+o.az;
+ if(o.ourref) riad+=' · Naša spis. zn.: '+o.ourref;
+ o.meta=o.meta||{}; o.meta.sk=riad;
+ alert('Riadok zostavený do SK. Ostatných 8 jazykov doplní Claude pri najbližšom uložení/prekonzultovaní.');
+ render();
+}
+function sel(l,v,opts,on){return '<label>'+l+'</label><select onchange="'+on+'">'
+ +opts.map(o=>'<option value="'+esc(o[0])+'"'+(o[0]===v?' selected':'')+'>'+esc(o[1])+'</option>').join('')+'</select>';}
+
+// ── súhrn: HTML <-> čitateľný text ──────────────────────────────
+const NADPIS2={de:"Über diese Eingabe",en:"About this submission",sk:"O tomto podaní",
+ hr:"O ovom podnesku",pl:"O tym piśmie",es:"Sobre este escrito",it:"Su questa istanza",
+ fr:"À propos de cet écrit",sv:"Om denna inlaga"};
+const NADPIS={de:"Zusammenfassung des Dokuments",en:"Document summary",sk:"Súhrn dokumentu",
+ hr:"Sažetak dokumenta",pl:"Streszczenie dokumentu",es:"Resumen del documento",
+ it:"Riepilogo del documento",fr:"Résumé du document",sv:"Sammanfattning av dokumentet"};
+function html2txt(h){
+ if(!h) return '';
+ var t=h;
+ t=t.replace(/<h[1-6][^>]*>.*?<\/h[1-6]>/gi,'');                       // nadpis preč
+ t=t.replace(/<a\s[^>]*href="([^"]*)"[^>]*>(.*?)<\/a>/gi,'[$2]($1)');  // odkaz -> [text](url)
+ t=t.replace(/<strong[^>]*>(.*?)<\/strong>/gi,'**$1**');               // tučné -> **text**
+ t=t.replace(/<b[^>]*>(.*?)<\/b>/gi,'**$1**');                         // <b> -> **text**
+ t=t.replace(/<\/p>\s*<p[^>]*>/gi,'\n\n').replace(/<\/?p[^>]*>/gi,'');
+ t=t.replace(/<br\s*\/?>/gi,'\n');
+ t=t.replace(/<li[^>]*>/gi,'• ').replace(/<\/li>/gi,'\n').replace(/<\/?ul[^>]*>/gi,'');
+ t=t.replace(/<[^>]+>/g,'');
+ var d=document.createElement('textarea'); d.innerHTML=t; t=d.value;
+ return t.replace(/\n{3,}/g,'\n\n').trim();
+}
+function txt2html(t,L,NAD){
+ NAD=NAD||NADPIS;
+ if(!t||!t.trim()) return '';
+ var esc1=function(x){return x.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');};
+ var inline=function(b){
+   b=b.replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>');              // **text** -> tučné
+   b=b.replace(/\[([^\]]+)\]\(([^)]+)\)/g,'<a href="$2" target="_blank" rel="noopener">$1</a>');
+   return b;
+ };
+ var out=t.trim().split(/\n\s*\n/).map(function(od){
+   var lines=od.trim().split(/\n/);
+   var jeZoznam = lines.length>0 && lines.every(function(l){return /^[•\-]\s+/.test(l.trim());});
+   if(jeZoznam){
+     return '<ul>'+lines.map(function(l){
+       return '<li>'+inline(esc1(l.trim().replace(/^[•\-]\s+/,'')))+'</li>';
+     }).join('')+'</ul>';
+   }
+   var b=inline(esc1(od.trim()).replace(/\n/g,'<br>'));
+   return '<p>'+b+'</p>';
+ }).join('');
+ return '<h3>'+(NAD[L]||NAD.sk)+'</h3>'+out;
+}
+
+function jaz(o,c,ta,link){
+ o=o||{}; var v=o[LANG]||'';
+ var ine=L9.filter(function(L){return L!==LANG && (o[L]||'').trim();}).length;
+ var stav = ine===8 ? '<span style="color:#0B7A3B">✔ ostatných 8 jazykov vyplnených</span>'
+          : ine===0 ? '<span style="color:#8a5a00">ostatné jazyky doplní Claude</span>'
+          : '<span style="color:#8a5a00">vyplnených ďalších '+ine+' z 8 — zvyšok doplní Claude</span>';
+ var pole = ta
+   ? '<textarea class="'+(v?'':'miss')+'" oninput="'+c+'[\''+LANG+'\']=this.value;this.classList.remove(\'miss\')">'+esc(v)+'</textarea>'
+   : '<input class="'+(v?'':'miss')+'" value="'+esc(v)+'" oninput="'+c+'[\''+LANG+'\']=this.value;this.classList.remove(\'miss\')">';
+ var vsetky=L9.map(function(L){var t=(o[L]||'').trim();
+   return '<div class="jall-row"><span class="jall-l'+(L===LANG?' cur':'')+'">'+L.toUpperCase()+'</span><span class="jall-t'+(t?'':' emp')+'">'+(t?esc(t):'—')+'</span></div>';}).join('');
+ var det='<details class="jall"><summary>👁 všetkých 9 jazykov (náhľad, read-only)</summary>'+vsetky+'</details>';
+ return '<div class="j1"><span class="jl">'+LANG.toUpperCase()+'</span>'+pole+'</div><div class="jn">'+stav+'</div>'+det;
+}
+
+function tgl(zoz, aktiv, onclick, viac){
+ return '<div class="tglrow">'+zoz.map(function(o){
+  var on = viac ? (aktiv.indexOf(o[0])>=0) : (aktiv===o[0]);
+  return '<button class="tglb'+(on?' on':'')+'" onclick="'+onclick.replace('%V%',"'"+o[0]+"'")+'">'+o[1]+'</button>';
+ }).join('')+'</div>';
+}
+function prepniOblast(v){
+ var p=D.polozky[selPo]; p.oblast=p.oblast||[];
+ if(v==='all'){ p.oblast=[]; }
+ else { var i=p.oblast.indexOf(v); if(i>=0) p.oblast.splice(i,1); else p.oblast.push(v); }
+ var k=kartaById(p.karta); if(k) k.area=p.oblast.slice();   // prenesie sa na celú kartu
+ render();
+}
+function richPole(obj, cesta, nadpisy){
+ var v=html2txt(obj[LANG]||'');
+ var ine=L9.filter(function(L){return L!==LANG && (obj[L]||'').trim();}).length;
+ var stav = ine===8 ? '<span style="color:#0B7A3B">✔ ostatných 8 jazykov vyplnených</span>'
+          : ine===0 ? '<span style="color:#8a5a00">ostatné jazyky doplní Claude</span>'
+          : '<span style="color:#8a5a00">vyplnených ďalších '+ine+' z 8 — zvyšok doplní Claude</span>';
+ return '<div class="j1"><span class="jl">'+LANG.toUpperCase()+'</span>'
+  +'<textarea class="suh'+(v?'':' miss')+'" oninput="'+cesta+'[LANG]=txt2html(this.value,LANG,'+nadpisy+');this.classList.remove(\'miss\')">'
+  +esc(v)+'</textarea></div><div class="jn">'+stav+'</div>';
+}
+function suhrnPole(sid){
+ D.suhrny[sid]=D.suhrny[sid]||{};
+ var v=html2txt(D.suhrny[sid][LANG]||'');
+ var ine=L9.filter(function(L){return L!==LANG && (D.suhrny[sid][L]||'').trim();}).length;
+ var stav = ine===8 ? '<span style="color:#0B7A3B">✔ ostatných 8 jazykov vyplnených</span>'
+          : ine===0 ? '<span style="color:#8a5a00">ostatné jazyky doplní Claude</span>'
+          : '<span style="color:#8a5a00">vyplnených ďalších '+ine+' z 8 — zvyšok doplní Claude</span>';
+ var ph = v ? '' : ' placeholder="pridaj súhrn a vygeneruj ho z kontextu dokumentu!"';
+ return '<div class="j1"><span class="jl">'+LANG.toUpperCase()+'</span>'
+  +'<textarea class="suh'+(v?'':' miss')+'"'+ph+' oninput="D.suhrny[\''+sid+'\'][LANG]=txt2html(this.value,LANG,NADPIS);this.classList.remove(\'miss\')">'
+  +esc(v)+'</textarea></div><div class="jn">'+stav+'</div>';
+}
+function editor(){
+ const e=document.getElementById('ed');
+ if(selPo!==null && D.polozky[selPo]){
+  const p=D.polozky[selPo], i=selPo;
+  const P='D.polozky['+i+']';
+  if(!p.summodId){
+    var _zk=(p.karta||'x').replace(/^case-/,'').slice(0,14);
+    var _c=(D.polozky.filter(function(x){return x.karta===p.karta;}).indexOf(p)+1);
+    p.summodId='summod-'+_zk+'-'+('0'+_c).slice(-2);
+  }
+  const sid=p.summodId;
+  e.innerHTML='<h2>Dokument</h2><div class="sub">'+esc(p.date||'—')+' · '+(p.dir==='sent'?'↗ odoslané':'↙ prijaté')+'</div>'
+  +'<div class="row">'+pole('Dátum',p.date||'',P+'.date=this.value;docs()')
+  +sel('Prístup',p.access||'pub',[['pub','🌐 Verejné'],['pw','🔒 Heslo']],P+'.access=this.value;docs()')+'</div>'
+  +chk('bez dátumu (—)',p.bezDatumu,P+'.bezDatumu=this.checked;if(this.checked)'+P+'.date="";render()')
+  +'<div class="dvarady"><div><label>Smer</label>'
+  +tgl([['sent','↗ Odoslané'],['recv','↙ Došlé']],p.dir||'sent',P+'.dir=%V%;render()')
+  +'</div><div><label>Akcia</label><div class="tglrow akc">'
+  +'<button class="tglb'+(AKCIA==="add"?" on":"")+'" onclick="AKCIA=\'add\';novaPolozka()">➕ Pridať</button>'
+  +'<button class="tglb'+(AKCIA==="edit"?" on":"")+'" onclick="AKCIA=\'edit\';editor()">✏ Opraviť</button>'
+  +'<button class="tglb'+(AKCIA==="del"?" on":"")+'" onclick="AKCIA=\'del\';zmazPo()">🗑 Vymazať</button>'
+  +'</div></div></div>'
+  +sel('Stav',p.stav||'laeuft',[['laeuft','prebieha'],['eingereicht','podané'],['erledigt','vybavené'],['abgelehnt','zamietnuté']],P+'.stav=this.value')
+  +'<label>Typ výstupu</label>'
+  +tgl([['item','Celý riadok'],['link','Len odkaz']],p.mode||'item',P+'.mode=%V%;render()')
+  +'<label>Konanie</label><select onchange="'+P+'.karta=this.value;render()">'
+  +(D.karty||[]).map(k=>'<option value="'+esc(k.id)+'"'+(k.id===p.karta?' selected':'')+'>'+esc(nazovKarty(k))+'</option>').join('')+'</select>'
+  +'<label>⚖️ Orgán tejto položky <span class="hint">(voliteľné — vyplň LEN ak dokument poslal iný orgán než ten na konaní, napr. pokladnica súdu. Prázdne = preberie sa orgán konania.)</span></label>'
+  +'<input value="'+esc(p.court||'')+'" placeholder="Vyplň len v prípade iného orgánu!" oninput="'+P+'.court=this.value">'
+  +'<div class="row">'+pole('Az. súdna / úradná spis. zn.',p.az||'',P+'.az=this.value;docs()')
+  +pole('Naša spis. zn. interná',p.ourref||'',P+'.ourref=this.value')+'</div>'
+  +'<label>Predmet dokumentu (položka vo vlákne)</label>'+jaz(p.subj9=p.subj9||{},P+'.subj9')
+  +pole('🔒 Pokyn k heslu <span class="hint">(zobrazí sa návštevníkovi; heslo drží SharePoint — sem píš LEN ako ho získať)</span>',p.pwhint||'',P+'.pwhint=this.value')
+  +chk('❗ Označiť ako dôležité (červený výkričník + ľavý okraj)',p.dolezite,P+'.dolezite=this.checked;'+P+'.important=this.checked;docs()')
+  +chk('💬 Povoliť komentáre k tomuto dokumentu (kcmt + cmt-wrap placeholder)',p.komentare,P+'.komentare=this.checked;'+P+'.comments=this.checked')
+  +'<div style="margin:8px 0 4px"><button type="button" onclick="window.open(CUSDIS_DASH,\'_blank\')">💬 Otvoriť a moderovať komentáre (panel Cusdis)</button> <span class="hint">všetky komentáre projektu — schvaľuješ ich tu; kým neschváliš, nikomu sa nezobrazia</span></div>'
+  +'<label>Tlačidlá vo VLAJKA-VIEWERI (odoslané podania) — pridajú sa do všetkých 9 URL</label>'
+  +'<div class="ramik">'
+  +chk('✍ QES — skok na podpisový blok v origináli',p.btnQes!==false,P+'.btnQes=this.checked')
+  +chk('📄 Súhrn — okno so súhrnom priamo vo vieweri (ťahá z karty)',p.btnSum!==false,P+'.btnSum=this.checked')
+  +chk('⚖ Predpis (law) — odkaz na nosný právny predpis',p.btnLaw!==false,P+'.btnLaw=this.checked')
+  +pole('Predpis — URL/CELEX ~ popis <span class="hint">(voliteľné; prázdne = Claude vyberie nosný predpis)</span>',p.law||'',P+'.law=this.value;docs()')
+  +pole('Strana podpisu (qes = STRANA:DOK:ZAROVNANIE)',p.qes||'',P+'.qes=this.value')
+  +'</div>'
+  +'<label>↩ Odpoveď na (vlákno)</label><select onchange="'+P+'.replyTo=this.value;rewireThreads('+P+'.karta);docs()">'
+  +'<option value="">— bez väzby —</option>'
+  +(D.polozky||[]).filter(x=>x!==p&&x.karta===p.karta).map(x=>{const t=(x.dir==='sent'?'↗ ':'↙ ')+(x.date||'')+' · '+predmet(x);
+     return '<option value="'+esc(predmet(x))+'"'+(predmet(x)===p.replyTo?' selected':'')+'>'+esc(t)+'</option>';}).join('')
+  +'</select>'
+  +'<div class="ramik" style="border-color:#C55A11">'
+  +'<label>🔢 Poradové číslo vo vlákne <span class="hint">(ručné — prepíše automatiku podľa dátumu; prázdne = počíta sa samo)</span></label>'
+  +'<input type="number" min="1" step="1" style="max-width:120px" value="'+esc(p.thrNo||'')+'" oninput="'+P+'.thrNo=this.value.trim();docs()">'
+  +'</div>'
+  +'<label>Odkaz na dokument</label>'+jaz(p.urls=p.urls||{},P+'.urls')
+  +pole('Fallback URL <span class="hint">(pre každý prázdny jazyk)</span>',p.fallback||'',P+'.fallback=this.value')
+  +pole('✍ Podpísaný originál (QES) — URL',p.orig||'',P+'.orig=this.value;docs()')
+  +pole('🛈 Názov súboru <span class="hint">(vidíš LEN ty, verejnosť nie)</span>',p.fname||'',P+'.fname=this.value')
+  +pole('📁 Cesta k súboru <span class="hint">(vidíš LEN ty)</span>',p.fpath||'',P+'.fpath=this.value')
+  +'<div class="row">'+pole('🔗 Extra odkaz — text',(p.extra||{}).label||'',P+'.extra=Object.assign('+P+'.extra||{},{label:this.value})')
+  +pole('🔗 Extra odkaz — URL',(p.extra||{}).url||'',P+'.extra=Object.assign('+P+'.extra||{},{url:this.value})')+'</div>'
+  +'<label>📄 Súhrn dokumentu <span class="hint">(zobrazí sa aj verejnosti · odkaz píš ako [text](adresa))</span></label>'
+  +suhrnPole(sid)
+  +ta('📝 Sprievodný text (Begleittext) k dokumentu',p.begleit||'',P+'.begleit=this.value')
+  +ta('🗒️ Príkazy pre CLAUDE <span class="hint">(prenesú sa do MK, NEZOBRAZUJÚ sa na webe)</span>',p.prikazy||'',P+'.prikazy=this.value')
+  +'<div class="katbox"><div class="kath">🏷 Kategórie a spis. značky kauzy '
+  +'<span class="hint">(pri existujúcej kauze predvyplnené — zmena sa prenesie na celú kartu vrátane starších položiek)</span></div>'
+  +'<div class="katl">OBLASŤ PRÁVA (data-area)</div>'
+  +tgl([['all','🌐 Všetky'],['kartell','Kartelové právo'],['gdpr','GDPR'],
+        ['strafrecht','Trestné oznámenie'],['majetok','Zasahovanie do majetkových práv']],
+       (p.oblast&&p.oblast.length)?p.oblast:['all'],'prepniOblast(%V%)',1)
+  +'</div>'
+
+  +'<div class="acts"><button onclick="klonPo()">⧉ Duplikovať</button></div>';
+ } else if(selKa && kartaById(selKa)){
+  const k=kartaById(selKa), i=D.karty.indexOf(k);
+  const P='D.karty['+i+']';
+  e.innerHTML='<h2>Konanie</h2><div class="sub">'+esc(k.id)+'</div>'
+  +pole('ID karty',k.id,P+'.id=this.value')
+  +'<div class="row">'+pole('Spisová značka',k.az||'',P+'.az=this.value;cards()')
+  +pole('Naša značka',k.ourref||'',P+'.ourref=this.value')+'</div>'
+  +'<div class="row">'+pole('Dátum RRRR-MM-DD',k.date||'',P+'.date=this.value;cards()')
+  +pole('Dátum ako text',k.datum_txt||'',P+'.datum_txt=this.value')+'</div>'
+  +'<div class="row">'+pole('Jurisdikcia (de sk eu)',(k.jur||[]).join(' '),P+'.jur=this.value.split(/\s+/).filter(Boolean)')+'</div>'
+  +oblastChk(k.area,P)
+  +'<div class="row">'+pole('Orgán (text)',k.organ_txt||'',P+'.organ_txt=this.value')
+  +pole('📌 Pripnúť navrch — pozícia (1,2,3…)',k.pin||'',P+'.pin=this.value;render()')+'</div>'
+  +'<div class="acts" style="margin:4px 0 10px"><button type="button" onclick="zostavOrgan('+P+')">⚖ Zostaviť riadok Orgán (SK) z Orgánu + Sp.zn. + Našej značky</button></div>'
+  +chk('📌 Odopnúť — dať dole medzi nepripnuté',!k.pin,P+'.pin=this.checked?"":(this.checked?"":"1");render()')
+  +sel('Farba stavu',k.stav_trieda||'p-blue',[['p-blue','modrá — prebieha'],['p-amber','žltá — podané'],
+      ['p-green','zelená — vybavené'],['p-red','červená — zamietnuté']],P+'.stav_trieda=this.value')
+  +'<label>Názov konania</label>'+jaz(k.nazov=k.nazov||{},P+'.nazov')
+  +'<label>Podtitul konania</label>'+jaz(k.podtitul=k.podtitul||{},P+'.podtitul')
+  +'<label>Riadok Orgán / Oblasť</label>'+jaz(k.meta=k.meta||{},P+'.meta')
+  +'<label>Stav</label>'+jaz(k.stav=k.stav||{},P+'.stav')
+  +'<label>📝 Sprievodný text ku konaniu <span class="hint">(modal kauzy · odkaz píš ako [text](adresa))</span></label>'
+  +richPole(k.sprievodny=k.sprievodny||{}, P+'.sprievodny', 'NADPIS2')
+  +'<div class="acts"><button onclick="zmazKa()">🗑 Zmazať konanie</button></div>';
+ } else if(selKz && kauzaPodla(selKz)){
+  const z=kauzaPodla(selKz), zi=D.kauzy_reg.indexOf(z);
+  const nk=(z.ids||[]).filter(id=>kartaById(id)).length;
+  const nd=(D.polozky||[]).filter(p=>(z.ids||[]).indexOf(p.karta)>=0).length;
+  e.innerHTML='<h2>Kauza</h2><div class="sub">'+esc(z.spis)+' · '+nk+' konaní · '+nd+' dokumentov</div>'
+  +pole('Kód kauzy (data-spis)',z.spis,'D.kauzy_reg['+zi+'].spis=this.value')
+  +pole('Jurisdikcia (de sk eu)',(z.jur||[]).join(' '),'D.kauzy_reg['+zi+'].jur=this.value.split(/\s+/).filter(Boolean);tiles()')
+  +'<label>Názov kauzy</label>'+jaz(z.nazov,'D.kauzy_reg['+zi+'].nazov')
+  +'<label>Červený podtitul (nepovinné)</label>'+jaz(z.warn,'D.kauzy_reg['+zi+'].warn')
+  +'<label>Konania v kauze</label>'
+  +'<div style="font-size:12.5px;color:#4a5b6d">'+(z.ids||[]).map(id=>{const k=kartaById(id);
+     return '• '+esc(k?nazovKarty(k):id)+(k?'':' <span class="pill warn">karta neexistuje</span>');}).join('<br>')+'</div>'
+  +'<div class="acts"><button onclick="novaKartaVKauze()">➕ Pridať konanie</button> <button onclick="tiles();stat(\'Dlaždice prekreslené\')">↻ Prekresliť</button></div>';
+ } else e.innerHTML='<h2>Editor</h2><p class="hint">Vyber kauzu, konanie alebo dokument.</p>';
+}
+
+
+/* ── pridávanie a mazanie ── */
+function p9(){const o={};L9.forEach(L=>o[L]='');return o;}
+function novaKarta(){ if(!D){alert('Najprv načítaj dáta.');return;}
+ const id=prompt('ID nového konania:','case-'); if(!id) return;
+ if(kartaById(id)){alert('Také ID už existuje.');return;}
+ D.karty.push({id:id,jur:['de'],date:new Date().toISOString().slice(0,10),az:'',ourref:'',area:[],pin:'',
+  datum_txt:'',nazov:p9(),organ:p9(),stav:{}});
+ selKa=id; selPo=null; render();}
+function novaKartaVKauze(){ if(!D){alert('Najprv načítaj dáta.');return;}
+ if(!selKz){alert('Najprv vyber kauzu.');return;}
+ const z=kauzaPodla(selKz); if(!z){alert('Kauza nenájdená.');return;}
+ const id=prompt('ID nového konania:','case-'); if(!id) return;
+ if(kartaById(id)){alert('Také ID už existuje.');return;}
+ D.karty.push({id:id,jur:(z.jur||['de']).slice(),date:new Date().toISOString().slice(0,10),az:'',ourref:'',area:[],pin:'',
+  datum_txt:'',nazov:p9(),organ:p9(),stav:{}});
+ z.ids=z.ids||[]; z.ids.push(id);
+ selKa=id; selPo=null; render();}
+function novaPolozka(dir){ if(!D){alert('Najprv načítaj dáta.');return;}
+ if(!(D.karty||[]).length){alert('Najprv vytvor konanie.');return;}
+ const cid=selKa||D.karty[0].id, kz=kauzaKarty(cid), d=new Date();
+ D.polozky.push({kauza:(kz==='(bez kauzy)'?'':kz),kauza_nazov:'',dir:(dir||'sent'),
+  date:('0'+d.getDate()).slice(-2)+'.'+('0'+(d.getMonth()+1)).slice(-2)+'.'+d.getFullYear(),
+  stav:'laeuft',access:'',az:'',ourref:'',court:'',cmtid:'',summodId:'',fname:'',fpath:'',
+  cats:{},mode:'item',v:1,karta:cid,subj9:p9(),urls:p9(),subj:'',
+  begleit:'',cardsubj:'',prikazy:'',pwhint:'',extra:{},fallback:'',orig:'',law:'',qes:'',thread:'',replyTo:'',thrNo:'',bezDatumu:false,btnQes:true,btnSum:true,btnLaw:true,dolezite:false,komentare:true,
+  important:false,comments:true,oblast:[],jur:[]});
+ selPo=D.polozky.length-1; selKa=cid; render();}
+function klonPo(){const p=JSON.parse(JSON.stringify(D.polozky[selPo]));p.summodId='';
+ D.polozky.splice(selPo+1,0,p);selPo=selPo+1;render();}
+function zmazPo(){if(!confirm('Zmazať tento dokument?'))return;D.polozky.splice(selPo,1);selPo=null;render();}
+function zmazKa(){const k=kartaById(selKa);const n=D.polozky.filter(p=>p.karta===selKa).length;
+ if(!confirm('Zmazať konanie „'+nazovKarty(k)+'"?'+(n?'\n\nMá '+n+' dokumentov — zostanú bez konania.':'')))return;
+ D.karty.splice(D.karty.indexOf(k),1);selKa=null;selPo=null;render();}
+
+/* ── kontrola a export ── */
+function kontrola(){ if(!D){alert('Najprv načítaj dáta.');return;}
+ const ch=[];
+ (D.kauzy_reg||[]).forEach(z=>{const c=L9.filter(L=>!((z.nazov||{})[L]||'').trim());
+  if(c.length)ch.push('Kauza '+z.spis+': chýba názov v '+c.join(', ').toUpperCase());
+  (z.ids||[]).forEach(id=>{if(!kartaById(id))ch.push('Kauza '+z.spis+': odkazuje na neexistujúce konanie '+id);});});
+ (D.karty||[]).forEach(k=>{const c=L9.filter(L=>!(k.nazov||{})[L]);
+  if(c.length)ch.push('Konanie '+k.id+': chýba názov v '+c.join(', ').toUpperCase());
+  if(!k.az)ch.push('Konanie '+k.id+': prázdna spisová značka');});
+ (D.polozky||[]).forEach((p,i)=>{
+  const s=L9.filter(L=>!(p.subj9||{})[L]); if(s.length)ch.push('Dokument '+(p.date||'#'+(i+1))+': chýba predmet v '+s.join(', ').toUpperCase());
+  const u=L9.filter(L=>!(p.urls||{})[L]);
+  if(u.length===9)ch.push('Dokument '+(p.date||'#'+(i+1))+': žiadny odkaz');
+  else if(u.length)ch.push('Dokument '+(p.date||'#'+(i+1))+': chýba odkaz v '+u.join(', ').toUpperCase());
+  if(!/^\d{2}\.\d{2}\.\d{4}$/.test(p.date||''))ch.push('Dokument #'+(i+1)+': zlý tvar dátumu „'+(p.date||'')+'"');
+  if(!p.karta)ch.push('Dokument '+(p.date||'#'+(i+1))+': nepatrí do konania');
+  if(p.summodId&&!D.suhrny[p.summodId])ch.push('Dokument '+(p.date||'#'+(i+1))+': súhrn '+p.summodId+' neexistuje');});
+ document.getElementById('ed').insertAdjacentHTML('afterbegin', ch.length
+  ?'<div class="msg err"><b>'+ch.length+' nedostatkov:</b><br>'+ch.slice(0,50).map(esc).join('<br>')+(ch.length>50?'<br>…':'')+'</div>'
+  :'<div class="msg ok">Kontrola prešla — 9 jazykov, dátumy aj väzby v poriadku.</div>');
+}
+function setItemBg(v){ try{ document.documentElement.style.setProperty('--itembg', v); localStorage.setItem('fia_itembg', v); }catch(e){} }
+function resetItemBg(){ try{ document.documentElement.style.removeProperty('--itembg'); localStorage.removeItem('fia_itembg'); var el=document.getElementById('itembgpick'); if(el) el.value='#D9E6F4'; }catch(e){} }
+function obnovItemBg(){ try{ var v=localStorage.getItem('fia_itembg'); if(v){ document.documentElement.style.setProperty('--itembg', v); var el=document.getElementById('itembgpick'); if(el) el.value=v; } }catch(e){} }
+function setPageBg(v){ try{ document.documentElement.style.setProperty('--bg', v); localStorage.setItem('fia_pagebg', v); }catch(e){} }
+function resetPageBg(){ try{ document.documentElement.style.removeProperty('--bg'); localStorage.removeItem('fia_pagebg'); var el=document.getElementById('pagebgpick'); if(el) el.value='#EEF3F8'; }catch(e){} }
+function obnovPageBg(){ try{ var v=localStorage.getItem('fia_pagebg'); if(v){ document.documentElement.style.setProperty('--bg', v); var el=document.getElementById('pagebgpick'); if(el) el.value=v; } }catch(e){} }
+function setEdBg(v){ try{ document.documentElement.style.setProperty('--edbg', v); localStorage.setItem('fia_edbg', v); }catch(e){} }
+function resetEdBg(){ try{ document.documentElement.style.removeProperty('--edbg'); localStorage.removeItem('fia_edbg'); var el=document.getElementById('edbgpick'); if(el) el.value='#FFFFFF'; }catch(e){} }
+function obnovEdBg(){ try{ var v=localStorage.getItem('fia_edbg'); if(v){ document.documentElement.style.setProperty('--edbg', v); var el=document.getElementById('edbgpick'); if(el) el.value=v; } }catch(e){} }
+window.addEventListener('DOMContentLoaded',()=>{obnovItemBg(); obnovPageBg(); obnovEdBg(); kresliVlajky(); if(!obnovStav()) loadWeb();});
+
+document.addEventListener('input',()=>{zmenene=true;},true);
+window.addEventListener('beforeunload',e=>{ if(zmenene && !window.__akt){ e.preventDefault(); e.returnValue=''; }});
+
+
+// ── priamy zápis do repozitára ─────────────────────────────────
+const REPO="peterferenc246-design/peterferenc246-design.github.io";
+const CESTA="_data/fia_data.json";
+function token(){
+ var t=null;
+ try{ t=sessionStorage.getItem('gh_tok'); }catch(e){}
+ if(!t){
+  t=prompt('Vlož GitHub token (fine-grained, Contents: read+write na peterferenc246-design.github.io (zápis iba do vetvy koncept).\n\n'
+    +'Uloží sa LEN do tejto relácie prehliadača, nikam sa neposiela okrem GitHubu\n'
+    +'a po zatvorení karty zmizne.');
+  if(!t) return null;
+  t=t.trim();
+  try{ sessionStorage.setItem('gh_tok',t); }catch(e){}
+ }
+ return t;
+}
+function zabudniToken(){ try{ sessionStorage.removeItem('gh_tok'); }catch(e){} stat('token zabudnutý'); }
+async function ulozDoRepa(){
+ if(!D){ alert('Najprv načítaj dáta.'); return; }
+ var t=token(); if(!t) return;
+ pripravExport();
+ var telo=JSON.stringify(D,null,1);
+ stat('ukladám do repa…');
+ try{
+  var api='https://api.github.com/repos/'+REPO+'/contents/'+CESTA;
+  var r=await fetch(api+'?ref=koncept',{headers:{Authorization:'Bearer '+t,Accept:'application/vnd.github+json'}});
+  if(r.status===401||r.status===403){ var gm=''; try{ gm=(await r.json()).message||''; }catch(e){} zabudniToken(); throw new Error('HTTP '+r.status+' pri čítaní z GitHubu.\n\nToken, ktorý editor poslal: '+t.length+' znakov, začína na github_pat_: '+(t.slice(0,11)==='github_pat_')+'.\n\nGitHub odpovedal: "'+String(gm).slice(0,160)+'"'); }
+  if(!r.ok) throw new Error('čítanie zlyhalo ('+r.status+')');
+  var meta=await r.json();
+  var bytes=new TextEncoder().encode(telo), bin='', KUS=0x8000;
+  for(var i=0;i<bytes.length;i+=KUS){ bin+=String.fromCharCode.apply(null,bytes.subarray(i,i+KUS)); }
+  var b64=btoa(bin);
+  var put=await fetch(api,{method:'PUT',
+    headers:{Authorization:'Bearer '+t,Accept:'application/vnd.github+json','Content-Type':'application/json'},
+    body:JSON.stringify({message:'Editor: aktualizacia dat registra ('+new Date().toISOString().slice(0,16).replace('T',' ')+')',
+                         content:b64, sha:meta.sha, branch:'koncept'})});
+  if(!put.ok){
+    var e={}; try{ e=await put.json(); }catch(x){}
+    throw new Error((e.message||'zápis zlyhal')+' (HTTP '+put.status+', '+Math.round(telo.length/1024)+' kB)');
+  }
+  var out=await put.json();
+  zmenene=false;
+  stat('uložené · commit '+out.commit.sha.slice(0,8));
+  document.getElementById('ed').insertAdjacentHTML('afterbegin',
+   '<div class="msg ok"><b>Dáta uložené do repozitára.</b><br>commit '+out.commit.sha.slice(0,8)
+   +'<br>Konceptové dáta boli uložené do vetvy <b>koncept</b>. Produkčná <b>main</b> nebola zmenená.</div>');
+ }catch(err){
+  stat('uloženie zlyhalo');
+  alert('❌ Uloženie zlyhalo:\n\n'+String(err.message||err));
+  document.getElementById('ed').insertAdjacentHTML('afterbegin',
+   '<div class="msg err"><b>Uloženie zlyhalo:</b> '+esc(String(err.message||err))
+   +'<br>Použi ⬇ JSON a pošli súbor Claudovi.'
+   +'<br><button style="margin-top:7px" onclick="zabudniToken()">🔑 Zabudnúť token a zadať znova</button></div>');
+ }
+}
+
+function pripravExport(){
+ D.kauzy=(D.kauzy_reg||[]).map(function(z){return {spis:z.spis,jur:z.jur||[],ids:z.ids||[],
+   n:(D.polozky||[]).filter(function(p){return (z.ids||[]).indexOf(p.karta)>=0;}).length};});
+ (D.polozky||[]).forEach(function(p){ var kz=kauzaKarty(p.karta); if(kz) p.kauza=kz; });
+}
+function stiahni(){ if(!D){alert('Najprv načítaj dáta.');return;}
+ D.kauzy=(D.kauzy_reg||[]).map(z=>({spis:z.spis,jur:z.jur||[],ids:z.ids||[],
+   n:(D.polozky||[]).filter(p=>(z.ids||[]).indexOf(p.karta)>=0).length}));
+ (D.polozky||[]).forEach(p=>{ const kz=kauzaKarty(p.karta); if(kz) p.kauza=kz; });
+ const a=document.createElement('a');
+ a.href=URL.createObjectURL(new Blob([JSON.stringify(D,null,1)],{type:'application/json'}));
+ a.download='fia_data.json'; a.click();
+ zmenene=false; stat('JSON stiahnutý. Nahraj ho do _data/ na GitHube — register.html sa prestaví sám.');
+}
+
+/* ── vodorovný rozdeľovač: ťahaj hore/dole, dvojklik = 50/50 ── */
+(function(){
+ var split=document.getElementById('hsplit'),
+     top=document.getElementById('hTop'),
+     drag=document.getElementById('hDrag'),
+     aktiv=false;
+ if(!split||!top||!drag) return;
+ function nastavH(px){
+  var H=split.clientHeight, min=64, max=H-90;
+  if(max<min) max=min;
+  if(px<min) px=min; if(px>max) px=max;
+  top.style.flex='0 0 auto';
+  top.style.height=px+'px';
+ }
+ function init(){ nastavH(Math.round(split.clientHeight*0.55)); }
+ drag.addEventListener('pointerdown',function(e){
+  aktiv=true; drag.classList.add('drag');
+  try{drag.setPointerCapture(e.pointerId);}catch(_){}
+  document.body.style.cursor='row-resize'; e.preventDefault();
+ });
+ window.addEventListener('pointermove',function(e){
+  if(!aktiv) return;
+  nastavH(e.clientY - split.getBoundingClientRect().top);
+ });
+ function koniec(e){
+  if(!aktiv) return; aktiv=false; drag.classList.remove('drag');
+  document.body.style.cursor='';
+  try{drag.releasePointerCapture(e.pointerId);}catch(_){}
+ }
+ window.addEventListener('pointerup',koniec);
+ window.addEventListener('pointercancel',koniec);
+ drag.addEventListener('dblclick',function(){ nastavH(Math.round(split.clientHeight*0.5)); });
+ window.addEventListener('resize',function(){
+  var h=parseInt(top.style.height,10);
+  nastavH(isNaN(h)?Math.round(split.clientHeight*0.55):h);
+ });
+ init();
+})();
+</script>
+</body></html>
