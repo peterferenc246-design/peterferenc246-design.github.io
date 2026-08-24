@@ -202,8 +202,8 @@ document.querySelectorAll('.tab').forEach(function(b){
 document.querySelectorAll('.f').forEach(function(b){
  b.addEventListener('click',function(){ document.body.dataset.l=b.dataset.l; document.documentElement.lang=b.dataset.l;
   document.querySelectorAll('.f').forEach(function(x){x.classList.remove('on');}); b.classList.add('on'); });});
-if(location.hash){ var c=document.querySelector(location.hash); if(c&&c.tagName==='DETAILS'){ c.open=true; c.scrollIntoView(); } }
 apply();
+if(location.hash){ var c=document.querySelector(location.hash); if(c&&c.tagName==='DETAILS'){ c.open=true; setTimeout(function(){ c.scrollIntoView(); }, 0); } }
 /* vlákna: číslovanie krúžkov (1=pôvodné, 2=reakcia) + zvýraznenie a scroll na partnera */
 (function(){
   document.querySelectorAll('details.case').forEach(function(c){
