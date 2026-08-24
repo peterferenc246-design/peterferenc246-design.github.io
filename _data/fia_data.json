@@ -4008,6 +4008,72 @@
     "majetok"
    ],
    "jur": []
+  },
+  {
+   "kauza": "PR-2026-EXS",
+   "kauza_nazov": "",
+   "dir": "sent",
+   "date": "24.08.2026",
+   "stav": "laeuft",
+   "access": "",
+   "az": "",
+   "ourref": "",
+   "court": "Mestský súd Bratislava IV pracovisko Petržalka ",
+   "cmtid": "",
+   "summodId": "summod-exe-ostn-02",
+   "fname": "07_Opatovna_Zaloba_VsZP_MSBA4_SK_EN_v10.0_signed with QES.pdf",
+   "fpath": "cd d:\\OneDrive - Peter Ferenc Foxpro\\Dokumenty\\Slovensko\\Všeobecná zdravotná poisťovňa\\Pošta\\Odoslaná\\07_Opatovna_Zaloba_VsZP_MSBA4_SK_EN_v10.0_signed with QES.pdf",
+   "cats": {},
+   "mode": "item",
+   "v": 1,
+   "karta": "case-exe-ostn",
+   "subj9": {
+    "de": "",
+    "en": "",
+    "sk": "OPÄTOVNÁ ŽALOBA O NÁHRADU ŠKODY",
+    "hr": "",
+    "pl": "",
+    "es": "",
+    "it": "",
+    "fr": "",
+    "sv": ""
+   },
+   "urls": {
+    "de": "",
+    "en": "",
+    "sk": "https://peterferencfoxpro-my.sharepoint.com/:b:/g/personal/info_foxprof_club/IQAeiMN3Bqu-Q5mEeEQi-bBaAWiNWt9eKKYkbPEdnVtSkyo?e=RigTP1",
+    "hr": "",
+    "pl": "",
+    "es": "",
+    "it": "",
+    "fr": "",
+    "sv": ""
+   },
+   "subj": "",
+   "begleit": "Vygeneruj Sprievodný text",
+   "cardsubj": "",
+   "prikazy": "Do poľa Orgán vlož aj ikonu váhy",
+   "pwhint": "",
+   "extra": {},
+   "fallback": "",
+   "orig": "https://peterferencfoxpro-my.sharepoint.com/:b:/g/personal/info_foxprof_club/IQAeiMN3Bqu-Q5mEeEQi-bBaAWiNWt9eKKYkbPEdnVtSkyo?e=RigTP1",
+   "law": "",
+   "qes": "8",
+   "thread": "",
+   "replyTo": "",
+   "thrNo": "1",
+   "bezDatumu": false,
+   "btnQes": true,
+   "btnSum": true,
+   "btnLaw": true,
+   "dolezite": true,
+   "komentare": true,
+   "important": true,
+   "comments": true,
+   "oblast": [
+    "majetok"
+   ],
+   "jur": []
   }
  ],
  "suhrny": {
@@ -4321,6 +4387,9 @@
    "it": "<h3>Riepilogo del documento</h3><p>Citazione a comparire all'udienza nella causa n. 14C/15/2025 (domanda di risarcimento danni, Peter Ferenc contro JUDr. Adriana Soldán Steinerová).</p><p>Il Tribunale regionale di Trenčín cita l'attore a comparire all'udienza del <strong>19.10.2026 alle ore 10:30</strong>, aula n. 106, 1° piano. Il tribunale giustifica la citazione con la necessità di sentire personalmente l'attore.</p><p>Tale necessità, tuttavia, non emerge dallo stato attuale delle prove — dalle prove prodotte risulta chiaramente che l'esecuzione era illegittima e che la lesione dei diritti patrimoniali dell'attore è evidente. Disporre un'audizione personale in queste circostanze appare come un ulteriore mezzo del tribunale per dilazionare il procedimento. L'attore reagirà adeguatamente a questa ostruzione nella propria memoria.</p><p>La citazione è stata emessa dalla giudice JUDr. Milina Jánošková il 24.6.2026.</p>",
    "fr": "<h3>Résumé du document</h3><p>Citation à comparaître à l'audience dans l'affaire n° 14C/15/2025 (demande de dommages-intérêts, Peter Ferenc contre JUDr. Adriana Soldán Steinerová).</p><p>Le tribunal régional de Trenčín cite le demandeur à comparaître à l'audience du <strong>19.10.2026 à 10h30</strong>, salle n° 106, 1er étage. Le tribunal justifie la citation par la nécessité d'entendre personnellement le demandeur.</p><p>Cette nécessité ne ressort toutefois pas de l'état actuel des preuves — les preuves produites démontrent clairement que l'exécution était illégale et que l'atteinte aux droits patrimoniaux du demandeur est manifeste. Ordonner une audition personnelle dans ces circonstances apparaît comme un moyen supplémentaire, pour le tribunal, de retarder la procédure. Le demandeur réagira de manière appropriée à cette obstruction dans ses conclusions.</p><p>La citation a été délivrée par la juge JUDr. Milina Jánošková le 24.6.2026.</p>",
    "sv": "<h3>Sammanfattning av dokumentet</h3><p>Kallelse till muntlig förhandling i mål nr 14C/15/2025 (skadeståndstalan, Peter Ferenc mot JUDr. Adriana Soldán Steinerová).</p><p>Regiondomstolen i Trenčín kallar käranden till förhandling den <strong>19.10.2026 kl. 10:30</strong>, rum nr 106, 1:a våningen. Domstolen motiverar kallelsen med behovet av att höra käranden personligen.</p><p>Detta behov framgår dock inte av den hittillsvarande bevisningen — av den bevisning som lagts fram framgår tydligt att utmätningen var olaglig och att intrånget i kärandens egendomsrättigheter är uppenbart. Att förordna om personlig utfrågning under dessa omständigheter framstår som ytterligare ett sätt för domstolen att förhala förfarandet. Käranden kommer att bemöta denna obstruktion på lämpligt sätt i sitt yttrande.</p><p>Kallelsen utfärdades av domare JUDr. Milina Jánošková den 24.6.2026.</p>"
+  },
+  "summod-exe-ostn-02": {
+   "sk": "<h3>Súhrn dokumentu</h3><p>Do súhrnu zdôrazni aj tieto argumenty: PRÁVNY VÝZNAM PRE ŽALOBU, žalobcu!<br>Toto ustanovenie priamo podporuje argumentáciu žalobcu — inštitúcie majú aktívnu, nie pasívnu povinnosť (\"si bezodkladne poskytujú alebo vymieňajú\"), a to na účely stanovenia práv a povinností osôb (čo zahŕňa aj poistný status). Táto povinnosť smeruje medzi inštitúciami navzájom a neprieč európou (napr. medzi VšZP a nemeckou zdravotnou poisťovňou), nie k jednotlivcovi — čo posilňuje argument žalobcu o tom, že nie je to na žalobcovi, aby všetko inicioval, ale na inštitúciách, aby si údaje aktívne vymieňali a to zakladá ich zákonnú povinnosť a nie dobrú vôľu. VšZP má iba snahu sa zbaviť zodpovednosti za porušenie zákona, ktorý je ukladá povinnosť si overiť status poistenca pred tým, ako vystaví výkaz nedoplatkov!</p>"
   }
  },
  "kauzy": [
@@ -4378,7 +4447,7 @@
     "case-udzs-namietka",
     "case-exe-ostn"
    ],
-   "n": 4
+   "n": 5
   },
   {
    "spis": "PR-2026-VsZ-006",
