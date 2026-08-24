@@ -1787,71 +1787,6 @@
   },
   {
    "v": 1,
-   "kauzaKey": "k-vszp",
-   "kauza": "PR-2026-VsZ-006",
-   "cardsubj": "ŽALOBA O NÁHRADU ŠKODY vo veci: Zasahovania do majetkových práv",
-   "subj": "ŽALOBA O NÁHRADU ŠKODY vo veci: Zasahovania do majetkových práv",
-   "dir": "sent",
-   "mode": "item",
-   "date": "10.07.2025",
-   "access": "pub",
-   "important": true,
-   "fname": "05_Žaloba na VšZP_156EX 171-25_podpísané s QES",
-   "fallback": "https://docs.google.com/viewer?url=https%3A%2F%2Fcdn.jsdelivr.net%2Fgh%2Fpeterferenc246-design%2Ffia%4052db039b4d775da13222814870d54649340faf32%2Fdocs%2F15_Zaloba_VsZP_156EX-171-25_SK_QES.pdf&embedded=true",
-   "urls": {
-    "de": "https://docs.google.com/viewer?url=https%3A%2F%2Fcdn.jsdelivr.net%2Fgh%2Fpeterferenc246-design%2Ffia%4052db039b4d775da13222814870d54649340faf32%2Fdocs%2F15_Zaloba_VsZP_156EX-171-25_DE.pdf&embedded=true",
-    "en": "https://docs.google.com/viewer?url=https%3A%2F%2Fcdn.jsdelivr.net%2Fgh%2Fpeterferenc246-design%2Ffia%4052db039b4d775da13222814870d54649340faf32%2Fdocs%2F15_Zaloba_VsZP_156EX-171-25_EN.pdf&embedded=true",
-    "sk": "https://docs.google.com/viewer?url=https%3A%2F%2Fcdn.jsdelivr.net%2Fgh%2Fpeterferenc246-design%2Ffia%4052db039b4d775da13222814870d54649340faf32%2Fdocs%2F15_Zaloba_VsZP_156EX-171-25_SK_QES.pdf&embedded=true",
-    "hr": "https://docs.google.com/viewer?url=https%3A%2F%2Fcdn.jsdelivr.net%2Fgh%2Fpeterferenc246-design%2Ffia%4052db039b4d775da13222814870d54649340faf32%2Fdocs%2F15_Zaloba_VsZP_156EX-171-25_HR.pdf&embedded=true",
-    "pl": "https://docs.google.com/viewer?url=https%3A%2F%2Fcdn.jsdelivr.net%2Fgh%2Fpeterferenc246-design%2Ffia%4052db039b4d775da13222814870d54649340faf32%2Fdocs%2F15_Zaloba_VsZP_156EX-171-25_PL.pdf&embedded=true",
-    "es": "https://docs.google.com/viewer?url=https%3A%2F%2Fcdn.jsdelivr.net%2Fgh%2Fpeterferenc246-design%2Ffia%4052db039b4d775da13222814870d54649340faf32%2Fdocs%2F15_Zaloba_VsZP_156EX-171-25_EN.pdf&embedded=true",
-    "it": "https://docs.google.com/viewer?url=https%3A%2F%2Fcdn.jsdelivr.net%2Fgh%2Fpeterferenc246-design%2Ffia%4052db039b4d775da13222814870d54649340faf32%2Fdocs%2F15_Zaloba_VsZP_156EX-171-25_IT.pdf&embedded=true",
-    "fr": "https://docs.google.com/viewer?url=https%3A%2F%2Fcdn.jsdelivr.net%2Fgh%2Fpeterferenc246-design%2Ffia%4052db039b4d775da13222814870d54649340faf32%2Fdocs%2F15_Zaloba_VsZP_156EX-171-25_FR.pdf&embedded=true",
-    "sv": "https://docs.google.com/viewer?url=https%3A%2F%2Fcdn.jsdelivr.net%2Fgh%2Fpeterferenc246-design%2Ffia%4052db039b4d775da13222814870d54649340faf32%2Fdocs%2F15_Zaloba_VsZP_156EX-171-25_EN.pdf&embedded=true"
-   },
-   "cats": {
-    "jur": [
-     "sk"
-    ],
-    "area": [
-     "majetok"
-    ]
-   },
-   "az": "",
-   "ourref": "PR-2026-VšZ",
-   "comments": true,
-   "cmtid": "cmt-vszp-zaloba-001",
-   "pwhint": "",
-   "begleit": "Žaloba o náhradu škody 10 000 € proti VšZP (OS Bratislava V, 10.07.2025) za neoprávnenú exekúciu 156EX 171/25 — pohľadávka bola pritom zrušená na 0 € a žalobca je poistený v Nemecku (nar. 883/2004). Indícia: VšZP nevyužíva EESSI a generuje nezákonné výkazy nedoplatkov voči vysťahovaným občanom; 10 € trovy ponecháva otvorené v tandeme s exekútorkou (jej trovy ~135 €). Petit: 10 000 € náhrada škody (zák. 514/2003 Z. z.) + úrok + trovy.",
-   "court": "Okresný súd Bratislava V",
-   "thread": "",
-   "stav": "laeuft",
-   "extra": null,
-   "replyTo": "",
-   "karta": "case-zaloba-o-nahradu-skody",
-   "subj9": {
-    "de": "Schadenersatzklage in Sachen: Eingriff in Vermögensrechte",
-    "en": "Action for damages concerning: interference with property rights",
-    "sk": "ŽALOBA O NÁHRADU ŠKODY vo veci: Zasahovania do majetkových práv",
-    "hr": "Tužba za naknadu štete u predmetu: Zadiranje u imovinska prava",
-    "pl": "Pozew o odszkodowanie w sprawie: Naruszenie praw majątkowych",
-    "es": "Demanda de indemnización de daños en el asunto: Injerencia en los derechos patrimoniales",
-    "it": "Azione di risarcimento danni in materia di: Lesione dei diritti patrimoniali",
-    "fr": "Action en réparation du préjudice concernant : Atteinte aux droits patrimoniaux",
-    "sv": "Skadeståndstalan angående: Ingrepp i förmögenhetsrättigheter"
-   },
-   "summodId": "",
-   "dolezite": true,
-   "komentare": true,
-   "oblast": [
-    "majetok"
-   ],
-   "jur": [
-    "sk"
-   ]
-  },
-  {
-   "v": 1,
    "kauzaKey": "k-lra",
    "kauza": "LRA-2026-BG",
    "cardsubj": "Rozhodnutie o pokute · § 146 ods. 2 GewO v spojení s § 14 ods. 1 GewO · zn. 30-8223.1 AD",
@@ -4477,7 +4412,8 @@
    "it": "<h3>Riepilogo del documento</h3><p>Istanza di decisione senza udienza, depositata il 09.08.2026 presso il Tribunale distrettuale di Trenčín, in risposta alla citazione dell'attore all'udienza fissata per il 19.10.2026 nel procedimento n. 14C/15/2025 (causa per risarcimento danni contro l'ufficiale giudiziario JUDr. Adriana Soldán Steinerová).</p><p>L'attore chiede in via principale che il tribunale decida ai sensi dell'art. 177 CSP senza fissare udienza, poiché i fatti sono sufficientemente comprovati da prove documentali e l'audizione personale non è necessaria; in subordine chiede che l'audizione si svolga in videoconferenza ai sensi dell'art. 61 CSP. Argomenta in particolare che il capitale del credito azionato è pacificamente pari a 0 € (confermato dalla stessa VšZP il 6.6.2025) e che le spese di esecuzione costituiscono un credito accessorio legato all'esistenza del credito principale, che non può sussistere autonomamente una volta estinto quest'ultimo. Segnala inoltre la condotta incoerente della VšZP in relazione a tre estratti di debito fattualmente identici emessi lo stesso giorno (6.6.2025): uno è stato integralmente annullato, mentre negli altri è stata mantenuta una tassa di 10 € senza motivazione. All'atto sono allegate una copia della citazione e le tre dichiarazioni della VšZP del 6.6.2025.</p>",
    "fr": "<h3>Résumé du document</h3><p>Demande de décision sans audience, déposée le 09.08.2026 devant le tribunal de district de Trenčín, en réponse à la citation du demandeur à comparaître à l'audience du 19.10.2026 dans l'affaire n° 14C/15/2025 (action en dommages-intérêts contre l'huissière JUDr. Adriana Soldán Steinerová).</p><p>Le demandeur sollicite à titre principal que le tribunal statue en application de l'art. 177 du Code de procédure civile sans tenir d'audience, les faits étant suffisamment établis par des preuves documentaires et une audition personnelle n'étant pas nécessaire ; à titre subsidiaire, il demande que l'audition se déroule par visioconférence en application de l'art. 61 du même code. Il fait valoir notamment que le principal de la créance poursuivie est incontestablement de 0 € (confirmé par la VšZP elle-même le 6.6.2025) et que les frais d'exécution constituent une créance accessoire liée à l'existence de la créance principale, laquelle ne saurait subsister de manière autonome après son extinction. Il relève en outre l'incohérence du traitement par la VšZP de trois relevés de dette factuellement identiques émis le même jour (6.6.2025) : l'un a été intégralement annulé, tandis que les autres ont maintenu des frais de 10 € sans justification. Sont joints à l'acte une copie de la citation et les trois déclarations de la VšZP du 6.6.2025.</p>",
    "sv": "<h3>Sammanfattning av dokumentet</h3><p>Begäran om avgörande utan muntlig förhandling, inlämnad den 09.08.2026 till distriktsdomstolen i Trenčín, som svar på kärandens kallelse till förhandling den 19.10.2026 i mål nr 14C/15/2025 (skadeståndstalan mot exekutionstjänstemannen JUDr. Adriana Soldán Steinerová).</p><p>Käranden yrkar i första hand att domstolen avgör målet enligt § 177 CSP utan förhandling, eftersom sakförhållandena är tillräckligt styrkta genom skriftlig bevisning och en personlig utfrågning inte är nödvändig; i andra hand begärs att utfrågningen genomförs via videokonferens enligt § 61 CSP. Han hävdar särskilt att kapitalbeloppet för den indrivna fordran obestridligen är 0 € (vilket VšZP självt bekräftade den 6.6.2025) och att exekutionskostnaderna utgör en accessorisk fordran knuten till huvudfordrans existens, vilken inte kan bestå självständigt sedan huvudfordran upphört. Han pekar även på VšZP:s inkonsekventa hantering av tre sakligt identiska skuldbesked utfärdade samma dag (6.6.2025) — ett upphävdes helt, medan de andra bibehöll en avgift på 10 € utan motivering. Till inlagan bifogas en kopia av kallelsen samt VšZP:s tre yttranden av den 6.6.2025.</p>"
-  }
+  },
+  "summod-zaloba-o-nahra-01": {}
  },
  "kauzy": [
   {
@@ -4534,7 +4470,7 @@
     "case-udzs-namietka",
     "case-exe-ostn"
    ],
-   "n": 5
+   "n": 6
   },
   {
    "spis": "PR-2026-VsZ-006",
@@ -4545,7 +4481,7 @@
     "case-trestne-oznamenie-na-gpsr-proti-prokurat",
     "case-zaloba-o-nahradu-skody"
    ],
-   "n": 1
+   "n": 0
   },
   {
    "spis": "PIF-EU-2026-MBS",
