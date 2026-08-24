@@ -1840,7 +1840,7 @@
     "fr": "Action en réparation du préjudice concernant : Atteinte aux droits patrimoniaux",
     "sv": "Skadeståndstalan angående: Ingrepp i förmögenhetsrättigheter"
    },
-   "summodId": "",
+   "summodId": "summod-zaloba-o-nahra-01",
    "dolezite": true,
    "komentare": true,
    "oblast": [
@@ -3993,7 +3993,7 @@
    "orig": "https://cdn.jsdelivr.net/gh/peterferenc246-design/fia@b1b3cb1d7517882cddcf4a758b2b46c76c9b3ac4/docs/20_KS_Trencin_Predvolanie_14C15-2025_SK_original.pdf",
    "law": "",
    "qes": "",
-   "thread": "thr-vyzva-ustne-pojednavanie-trencin",
+   "thread": "",
    "replyTo": "",
    "thrNo": "1",
    "bezDatumu": false,
@@ -4210,6 +4210,72 @@
    "jur": [
     "sk"
    ]
+  },
+  {
+   "kauza": "PR-2026-VsZ-006",
+   "kauza_nazov": "",
+   "dir": "sent",
+   "date": "12.08.2026",
+   "stav": "laeuft",
+   "access": "",
+   "az": "",
+   "ourref": "",
+   "court": "Mestský súd Bratislava Petržalka IV",
+   "cmtid": "",
+   "summodId": "summod-zaloba-o-nahra-03",
+   "fname": "09_Dodatok k zžalobe 15 000€ proti VšZP_súd BL IV_SK_EN_signed with QES.pdf",
+   "fpath": "cd d:\\OneDrive - Peter Ferenc Foxpro\\Dokumenty\\Slovensko\\Všeobecná zdravotná poisťovňa\\Pošta\\Odoslaná\\09_Dodatok k zžalobe 15 000€ proti VšZP_súd BL IV_SK_EN_signed with QES.pdf",
+   "cats": {},
+   "mode": "item",
+   "v": 1,
+   "karta": "case-zaloba-o-nahradu-skody",
+   "subj9": {
+    "de": "",
+    "en": "",
+    "sk": "Dôkazný reťazec k vyvráteniu tvrdenia VŠZP o nesplnení oznamovacej povinnosti a o dôvodnosti poplatkov za výkazy nedoplatkov",
+    "hr": "",
+    "pl": "",
+    "es": "",
+    "it": "",
+    "fr": "",
+    "sv": ""
+   },
+   "urls": {
+    "de": "",
+    "en": "",
+    "sk": "https://peterferencfoxpro-my.sharepoint.com/:b:/g/personal/info_foxprof_club/IQBzYTx7S6HZTY8h55nVT5OXATf9tmb9G43inx1uvWoaF74?e=S9PNKQ",
+    "hr": "",
+    "pl": "",
+    "es": "",
+    "it": "",
+    "fr": "",
+    "sv": ""
+   },
+   "subj": "",
+   "begleit": "už sa nachádza",
+   "cardsubj": "",
+   "prikazy": "pridaj položku aj do konceptu",
+   "pwhint": "",
+   "extra": {},
+   "fallback": "",
+   "orig": "",
+   "law": "",
+   "qes": "7",
+   "thread": "",
+   "replyTo": "",
+   "thrNo": "",
+   "bezDatumu": false,
+   "btnQes": true,
+   "btnSum": true,
+   "btnLaw": true,
+   "dolezite": true,
+   "komentare": true,
+   "important": true,
+   "comments": true,
+   "oblast": [
+    "majetok"
+   ],
+   "jur": []
   }
  ],
  "suhrny": {
@@ -4556,6 +4622,10 @@
    "it": "<h3>Riepilogo del documento</h3><p>Denuncia penale del 19.10.2025 alla Procura generale della Repubblica Slovacca contro il pubblico ministero Mgr. Barbora Holec Žiklová, il pubblico ministero JUDr. Kováčik (Procura distrettuale di Trenčín) e la funzionaria giudiziaria superiore JUDr. Lucia Konečná (Tribunale distrettuale di Trenčín), per sospetto abuso d'ufficio (art. 326, comma 1, lett. a, del codice penale) e intralcio alla giustizia (art. 344 del codice penale).</p><p>La denuncia riguarda un provvedimento della Procura distrettuale di Trenčín del 9.10.2025 (rif. 1Pn 572125/3309-11), che ha respinto l'opposizione del denunciante al rigetto di una denuncia penale riguardante l'ufficiale giudiziario JUDr. Adriana Soldán Steinerová. Secondo il denunciante, il provvedimento impugnato afferma falsamente che il credito della VšZP era stato ridotto a una tassa processuale di 10 €, mentre la stessa VšZP, nella dichiarazione del 16.6.2025, ha confermato che il capitale era stato azzerato. Il denunciante sostiene che i pubblici ministeri abbiano consapevolmente travisato il contenuto del fascicolo a suo danno. La denuncia contesta inoltre separatamente che JUDr. Lucia Konečná abbia trasferito, il 16.10.2025, senza potere né consenso dell'attore, il procedimento 14C/15/2025 al Tribunale distrettuale di Banská Bystrica.</p>",
    "fr": "<h3>Résumé du document</h3><p>Plainte pénale du 19.10.2025 déposée auprès du Parquet général de la République slovaque contre la procureure Mgr. Barbora Holec Žiklová, le procureur JUDr. Kováčik (parquet de district de Trenčín) et la greffière en chef JUDr. Lucia Konečná (tribunal de district de Trenčín), pour soupçon d'abus d'autorité d'un agent public (art. 326, § 1, let. a, du Code pénal) et d'entrave à la justice (art. 344 du Code pénal).</p><p>La plainte porte sur une décision du parquet de district de Trenčín du 9.10.2025 (réf. 1Pn 572125/3309-11), qui a rejeté la contestation du plaignant contre le rejet d'une plainte pénale concernant l'huissière JUDr. Adriana Soldán Steinerová. Selon le plaignant, la décision contestée affirme faussement que la créance de la VšZP a été réduite à des frais de procédure de 10 €, alors que la VšZP elle-même a confirmé, dans sa déclaration du 16.6.2025, que le principal avait été ramené à 0 €. Le plaignant soutient que les procureurs ont sciemment dénaturé le contenu du dossier à son détriment. La plainte conteste également, séparément, le fait que JUDr. Lucia Konečná ait transmis, le 16.10.2025, sans pouvoir ni consentement du demandeur, l'affaire 14C/15/2025 au tribunal de district de Banská Bystrica.</p>",
    "sv": "<h3>Sammanfattning av dokumentet</h3><p>Brottsanmälan av den 19.10.2025 till Slovakiens riksåklagarmyndighet mot åklagaren Mgr. Barbora Holec Žiklová, åklagaren JUDr. Kováčik (distriktsåklagarmyndigheten i Trenčín) och den högre domstolshandläggaren JUDr. Lucia Konečná (distriktsdomstolen i Trenčín), på misstanke om maktmissbruk av offentlig tjänsteman (§ 326.1 a i strafflagen) och hindrande av rättvisan (§ 344 i strafflagen).</p><p>Anmälan avser ett beslut av distriktsåklagarmyndigheten i Trenčín av den 9.10.2025 (ref. 1Pn 572125/3309-11), genom vilket anmälarens invändning mot avslaget på en brottsanmälan gällande exekutionstjänstemannen JUDr. Adriana Soldán Steinerová avvisades. Enligt anmälaren anger det överklagade beslutet felaktigt att VšZP:s fordran reducerades till en handläggningsavgift på 10 €, trots att VšZP självt i sitt yttrande av den 16.6.2025 bekräftade att kapitalbeloppet reducerades till 0 €. Anmälaren hävdar att åklagarna medvetet förvanskade akten till hans nackdel. Anmälan invänder även separat mot att JUDr. Lucia Konečná den 16.10.2025, utan befogenhet och utan kärandens samtycke, hänsköt målet 14C/15/2025 till distriktsdomstolen i Banská Bystrica.</p>"
+  },
+  "summod-zaloba-o-nahra-01": {},
+  "summod-zaloba-o-nahra-03": {
+   "sk": "<h3>Súhrn dokumentu</h3><p>vygeneruj</p>"
   }
  },
  "kauzy": [
@@ -4613,7 +4683,7 @@
     "case-udzs-namietka",
     "case-exe-ostn"
    ],
-   "n": 6
+   "n": 5
   },
   {
    "spis": "PR-2026-VsZ-006",
@@ -4624,7 +4694,7 @@
     "case-trestne-oznamenie-na-gpsr-proti-prokurat",
     "case-zaloba-o-nahradu-skody"
    ],
-   "n": 1
+   "n": 4
   },
   {
    "spis": "PIF-EU-2026-MBS",
