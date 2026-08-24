@@ -264,8 +264,8 @@ def item_html(p, n):
             + f'<div class="ibtn">{doc}{og}{sm}{kom}</div><div class="cmt-wrap"></div></div>')
 
 def share_dropdown(cid, title):
-    url = f"register.html#k-{cid}"
-    return f'<div class="sharewrap"><button class="cb" onclick="document.getElementById(\'sh-{cid}\').classList.toggle(\'on\')">↗ {g(UI["share"])}</button><div class="sharebox" id="sh-{cid}"><a href="#" onclick="event.preventDefault();navigator.clipboard.writeText(location.origin+location.pathname+\'#{cid}\')">📋 Kopírovať odkaz</a><a href="mailto:?subject={html.escape(title)}&body={html.escape(url)}">✉ E-mail</a></div></div>'
+    url = f"https://foxprof.club/karta-{cid}.html"
+    return f'<div class="sharewrap"><button class="cb" onclick="document.getElementById(\'sh-{cid}\').classList.toggle(\'on\')">↗ {g(UI["share"])}</button><div class="sharebox" id="sh-{cid}"><a href="#" onclick="event.preventDefault();navigator.clipboard.writeText(\'{url}\')">📋 Kopírovať odkaz</a><a href="mailto:?subject={html.escape(title)}&body={html.escape(url)}">✉ E-mail</a></div></div>'
 
 CARD_SCRIPT = """
 var CUS_APP='6fdea40e-6f8a-4877-b2e0-7b83dee8ee45';
